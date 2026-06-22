@@ -365,6 +365,9 @@ function App() {
             )}
           </div>
         </div>
+        <div className="section-inner footer-copyright">
+          <p>© {new Date().getFullYear()} {artist.name}. All artwork rights reserved.</p>
+        </div>
       </footer>
 
       {lightboxArtwork && (
