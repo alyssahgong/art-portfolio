@@ -269,7 +269,6 @@ export const artworks: Artwork[] = [
     categories: ['Drawing'],
     image: 'artworks/still-life.jpeg',
     alt: 'Mixed media sculpture titled Home built with popsicle sticks, newsprint, and colored pencil.',
-    award: { label: 'Honorable Mention', level: 'honorable', competition: SCHOLASTIC },
   },
   {
     id: 'friends',
@@ -280,6 +279,7 @@ export const artworks: Artwork[] = [
     categories: ['Drawing'],
     image: 'artworks/friends.jpeg',
     alt: 'Mixed media sculpture titled Home built with popsicle sticks, newsprint, and colored pencil.',
+    award: { label: 'Honorable Mention', level: 'honorable', competition: SCHOLASTIC },
   },
   {
     id: 'fruits',
