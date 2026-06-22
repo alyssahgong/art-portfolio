@@ -596,6 +596,18 @@
   border-color: rgba(255, 253, 247, 0.22);
 }
 
+.footer-copyright {
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(255, 253, 247, 0.1);
+}
+
+.footer-copyright p {
+  margin: 0;
+  color: rgba(255, 253, 247, 0.4);
+  font-size: 0.85rem;
+}
+
 .footer-note {
   max-width: 24rem;
   margin: 0;
