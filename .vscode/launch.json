@@ -1,0 +1,21 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Launch local Vite server",
+      "type": "node-terminal",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "command": "npm run dev",
+      "env": {
+        "NO_COLOR": "1"
+      },
+      "serverReadyAction": {
+        "pattern": "Local:\\s+(https?://127\\.0\\.0\\.1:\\d+/\\S*)",
+        "uriFormat": "%s",
+        "action": "debugWithChrome",
+        "webRoot": "${workspaceFolder}"
+      }
+    }
+  ]
+}

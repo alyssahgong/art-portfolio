@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Art portfolio mark">
+  <rect width="64" height="64" rx="14" fill="#1b1b18" />
+  <circle cx="23" cy="26" r="11" fill="#a8513e" />
+  <circle cx="40" cy="34" r="13" fill="#315f78" opacity="0.88" />
+  <circle cx="31" cy="46" r="8" fill="#b98a35" opacity="0.92" />
+</svg>
