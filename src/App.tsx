@@ -160,15 +160,11 @@ function App() {
         <div className="hero-shade" />
         <div className="hero-content">
           <h1>{artist.name}</h1>
-          <p className="hero-copy">{artist.statement}</p>
+          <p className="hero-copy">{artist.heroStatement}</p>
           <div className="hero-actions" aria-label="Primary actions">
             <a className="button button-primary" href="#works">
               Selected Works
               <ArrowUpRight aria-hidden="true" size={18} strokeWidth={1.8} />
-            </a>
-            <a className="button button-secondary" href={artist.email ? `mailto:${artist.email}` : '#contact'}>
-              Contact
-              <Mail aria-hidden="true" size={18} strokeWidth={1.8} />
             </a>
           </div>
         </div>
@@ -319,7 +315,6 @@ function App() {
             <div className="profile-copy">
               <p>{artist.bio}</p>
               <p>{artist.statement}</p>
-              <p>{artist.portraitNote}</p>
               {hasArtistFacts && (
                 <div className="artist-facts" aria-label="Artist details">
                   {artist.location && (
