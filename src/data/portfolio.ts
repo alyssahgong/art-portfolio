@@ -38,15 +38,14 @@ export const artist = {
   email: 'alyssahgong@gmail.com',
   instagram: '',
   heroImage: 'artworks/alyssums.jpeg',
+  heroStatement: 'Selected works drawing, printmaking, painting, mixed media, sculpture, and installation, centered on material exploration, memory, and personal visual language.',
   statement:
-    'Selected works drawing, printmaking, painting, mixed media, sculpture, and installation, centered on material exploration, memory, and personal visual language.',
+    'Recent award-recognized work spans printmaking, mixed media, drawing, painting, and installation, reflecting an ongoing investigation into transformation and the ways cultural traditions are preserved and reimagined through contemporary practice.',
   bio:
-    `${artistName} is a high school senior artist working across drawing, printmaking, painting, mixed media, and installation. Her portfolio emphasizes layered surfaces, constructed forms, and material processes that connect observation with personal history.`,
+    `${artistName} is a high school senior artist working across drawing, printmaking, painting, mixed media, sculpture, and installation. Her practice explores Asian identity, cultural memory, and belonging, using layered surfaces, constructed forms, and material experimentation to trace the relationship between personal narrative and broader cultural experience.`,
   concentrationTitle: 'Material memory, identity, and inherited forms.',
   concentration:
-    'The portfolio brings together finished works and process-focused studies to show how ideas move from observation into layered, tactile forms. Repeated materials such as bamboo, yarn, paper, print surfaces, and reflective elements build a visual language around memory, belonging, and transformation.',
-  portraitNote:
-    'Recent works include award-recognized pieces in printmaking, mixed media, drawing, painting, and installation.',
+    'The portfolio explores Asian American identity and the complexities of cultural belonging through a combination of finished works and process-driven investigations. Using materials such as bamboo, yarn, paper, print surfaces, and reflective elements, the work examines themes of migration, cultural memory, family heritage, and the negotiation between tradition and contemporary life. By layering personal narratives with broader social and cultural histories, the portfolio reflects on how identity is continuously shaped, challenged, and redefined.',
   contactNote: `For portfolio inquiries, email ${artistName} at alyssahgong@gmail.com.`,
 };
 

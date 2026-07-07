@@ -21,6 +21,7 @@ import {
   artworks,
   concentrationPoints,
   // processHighlights, // hidden until process section is ready
+  type Artwork,
 } from './data/portfolio';
 import artworkDimensions from 'virtual:artwork-dimensions';
 
@@ -28,12 +29,61 @@ const categories = ['All', ...Array.from(new Set(artworks.flatMap((artwork) => a
 const fallbackHeroArtwork = artworks.find((artwork) => artwork.featured) ?? artworks[0];
 // const processIcons = [BookOpen, Layers, Palette]; // hidden until process section is ready
 
+const WORK_GRID_WIDE_QUERY = '(min-width: 921px)';
+/** Reference column width (px) used only to compare relative card heights; the real column width doesn't matter since it cancels out across columns. */
+const COLUMN_REFERENCE_WIDTH = 300;
+const CAPTION_HEIGHT_ESTIMATE = 56;
+const COLUMN_GAP_ESTIMATE = 16;
+
 function formatCategories(categories: string[]) {
   return categories.join(' / ');
 }
 
 function assetUrl(path: string) {
   return `${import.meta.env.BASE_URL}${path}`;
+}
+
+function useWorkColumnCount() {
+  const [columnCount, setColumnCount] = useState(() =>
+    typeof window !== 'undefined' && window.matchMedia(WORK_GRID_WIDE_QUERY).matches ? 3 : 2,
+  );
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia(WORK_GRID_WIDE_QUERY);
+    const handleChange = (event: MediaQueryListEvent) => setColumnCount(event.matches ? 3 : 2);
+
+    mediaQuery.addEventListener('change', handleChange);
+    return () => mediaQuery.removeEventListener('change', handleChange);
+  }, []);
+
+  return columnCount;
+}
+
+/** Assigns artworks to columns greedily, always extending whichever column is currently shortest, so the grid reads left-to-right in card order like real masonry layouts. */
+function useWorkColumns(visibleArtworks: Artwork[], columnCount: number) {
+  return useMemo(() => {
+    const columns: Artwork[][] = Array.from({ length: columnCount }, () => []);
+    const columnHeights = new Array(columnCount).fill(0);
+
+    for (const artwork of visibleArtworks) {
+      const ratio = artworkDimensions[artwork.image];
+      const [width, height] = ratio ? ratio.split('/').map(Number) : [4, 5];
+      const cardHeight =
+        COLUMN_REFERENCE_WIDTH * (height / width) + CAPTION_HEIGHT_ESTIMATE + COLUMN_GAP_ESTIMATE;
+
+      let shortestIndex = 0;
+      for (let i = 1; i < columnHeights.length; i += 1) {
+        if (columnHeights[i] < columnHeights[shortestIndex]) {
+          shortestIndex = i;
+        }
+      }
+
+      columns[shortestIndex].push(artwork);
+      columnHeights[shortestIndex] += cardHeight;
+    }
+
+    return columns;
+  }, [visibleArtworks, columnCount]);
 }
 
 function App() {
@@ -51,6 +101,9 @@ function App() {
 
     return artworks.filter((artwork) => artwork.categories.includes(activeCategory));
   }, [activeCategory]);
+
+  const workColumnCount = useWorkColumnCount();
+  const workColumns = useWorkColumns(visibleArtworks, workColumnCount);
 
   const visibleIds = useMemo(
     () => visibleArtworks.map((artwork) => artwork.id),
@@ -160,15 +213,11 @@ function App() {
         <div className="hero-shade" />
         <div className="hero-content">
           <h1>{artist.name}</h1>
-          <p className="hero-copy">{artist.statement}</p>
+          <p className="hero-copy">{artist.heroStatement}</p>
           <div className="hero-actions" aria-label="Primary actions">
             <a className="button button-primary" href="#works">
               Selected Works
               <ArrowUpRight aria-hidden="true" size={18} strokeWidth={1.8} />
-            </a>
-            <a className="button button-secondary" href={artist.email ? `mailto:${artist.email}` : '#contact'}>
-              Contact
-              <Mail aria-hidden="true" size={18} strokeWidth={1.8} />
             </a>
           </div>
         </div>
@@ -213,37 +262,41 @@ function App() {
             </div>
 
             <div className="work-grid">
-              {visibleArtworks.map((artwork) => {
-                const { award } = artwork;
+              {workColumns.map((column, columnIndex) => (
+                <div className="work-column" key={columnIndex}>
+                  {column.map((artwork) => {
+                    const { award } = artwork;
 
-                return (
-                  <article className="work-card" id={artwork.id} key={artwork.id}>
-                    <img
-                      className="work-image"
-                      src={assetUrl(artwork.image)}
-                      alt={artwork.alt}
-                      style={{ aspectRatio: artworkDimensions[artwork.image] ?? '4 / 5' }}
-                    />
-                    <div className="work-caption">
-                      <h3>
-                        <button
-                          type="button"
-                          className="work-link"
-                          onClick={() => openLightbox(artwork.id)}
-                          aria-label={`View ${artwork.title} in detail`}
-                        >
-                          {artwork.title}
-                        </button>
-                      </h3>
-                      {award && (
-                        <span className={`award-chip award-chip-${award.level}`}>
-                          {award.label}
-                        </span>
-                      )}
-                    </div>
-                  </article>
-                );
-              })}
+                    return (
+                      <article className="work-card" id={artwork.id} key={artwork.id}>
+                        <img
+                          className="work-image"
+                          src={assetUrl(artwork.image)}
+                          alt={artwork.alt}
+                          style={{ aspectRatio: artworkDimensions[artwork.image] ?? '4 / 5' }}
+                        />
+                        <div className="work-caption">
+                          <h3>
+                            <button
+                              type="button"
+                              className="work-link"
+                              onClick={() => openLightbox(artwork.id)}
+                              aria-label={`View ${artwork.title} in detail`}
+                            >
+                              {artwork.title}
+                            </button>
+                          </h3>
+                          {award && (
+                            <span className={`award-chip award-chip-${award.level}`}>
+                              {award.label}
+                            </span>
+                          )}
+                        </div>
+                      </article>
+                    );
+                  })}
+                </div>
+              ))}
             </div>
           </div>
         </section>
@@ -319,7 +372,6 @@ function App() {
             <div className="profile-copy">
               <p>{artist.bio}</p>
               <p>{artist.statement}</p>
-              <p>{artist.portraitNote}</p>
               {hasArtistFacts && (
                 <div className="artist-facts" aria-label="Artist details">
                   {artist.location && (
