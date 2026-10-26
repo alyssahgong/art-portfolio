@@ -4,10 +4,14 @@ import { basename, extname, join, relative, sep } from 'node:path';
 import sharp from 'sharp';
 import type { Plugin } from 'vite';
 
-/** Width (px) of the grid thumbnails — about 2x the widest grid card, so they stay sharp on Retina screens. */
-const THUMB_WIDTH = 800;
+/** Width (px) of the grid thumbnails — about 1.7x the widest grid card (~370px): close to Retina-sharp at a smaller download. */
+const THUMB_WIDTH = 640;
 /** Longest edge (px) of the lightbox / full-screen image. Originals are never published at full resolution. */
 const LARGE_MAX_EDGE = 2400;
+const THUMB_WEBP_QUALITY = 80;
+const LARGE_JPEG_QUALITY = 85;
+/** Changing a setting above must regenerate cached images, so they're part of the cache key. */
+const OUTPUT_SETTINGS = `thumb ${THUMB_WIDTH}w webp q${THUMB_WEBP_QUALITY}, large ${LARGE_MAX_EDGE} jpeg q${LARGE_JPEG_QUALITY}`;
 const ORIGINAL_EXTENSIONS = new Set(['.jpg', '.jpeg', '.png', '.tif', '.tiff', '.webp']);
 /** Keep in sync with `Award['level']` in src/data/portfolio.ts. */
 const AWARD_LEVELS = ['gold', 'silver', 'honorable'];
@@ -238,6 +242,7 @@ export function artworksPlugin(projectRoot: string): Plugin {
       const cached = JSON.parse(readFileSync(metaPath, 'utf8'));
       if (
         cached.file === file &&
+        cached.settings === OUTPUT_SETTINGS &&
         cached.sourceModified === sourceModified &&
         existsSync(join(cacheDir, thumb)) &&
         existsSync(join(cacheDir, large))
@@ -256,16 +261,16 @@ export function artworksPlugin(projectRoot: string): Plugin {
     const largeInfo = await input
       .clone()
       .resize({ width: LARGE_MAX_EDGE, height: LARGE_MAX_EDGE, fit: 'inside', withoutEnlargement: true })
-      .jpeg({ quality: 85, mozjpeg: true })
+      .jpeg({ quality: LARGE_JPEG_QUALITY, mozjpeg: true })
       .toFile(join(cacheDir, large));
     await input
       .clone()
       .resize({ width: THUMB_WIDTH, withoutEnlargement: true })
-      .webp({ quality: 80 })
+      .webp({ quality: THUMB_WEBP_QUALITY })
       .toFile(join(cacheDir, thumb));
 
     const image = { ratio: `${largeInfo.width} / ${largeInfo.height}`, thumb, large };
-    writeFileSync(metaPath, JSON.stringify({ file, sourceModified, image }));
+    writeFileSync(metaPath, JSON.stringify({ file, sourceModified, settings: OUTPUT_SETTINGS, image }));
     return image;
   }
 

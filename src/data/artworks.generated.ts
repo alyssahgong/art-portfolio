@@ -11,8 +11,21 @@ export const artworks: Artwork[] = [
     "images": [
       {
         "ratio": "2400 / 1800",
-        "thumb": "artworks/thumb/comfort-in-all.webp",
-        "large": "artworks/large/comfort-in-all.jpg"
+        "thumb": "artworks/thumb/comfort-in-all-1.webp",
+        "large": "artworks/large/comfort-in-all-1.jpg",
+        "caption": "Full View"
+      },
+      {
+        "ratio": "1883 / 2400",
+        "thumb": "artworks/thumb/comfort-in-all-2.webp",
+        "large": "artworks/large/comfort-in-all-2.jpg",
+        "caption": "Scene"
+      },
+      {
+        "ratio": "1800 / 2400",
+        "thumb": "artworks/thumb/comfort-in-all-3.webp",
+        "large": "artworks/large/comfort-in-all-3.jpg",
+        "caption": "Pillow"
       }
     ]
   },

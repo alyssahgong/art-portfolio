@@ -8,7 +8,6 @@ import {
   Images,
   Instagram,
   // Layers, // used by process section
-  Mail,
   Menu,
   Maximize2,
   MapPin,
@@ -19,7 +18,6 @@ import {
 import './App.css';
 import {
   artist,
-  concentrationPoints,
   // processHighlights, // hidden until process section is ready
   type Artwork,
   type Award,
@@ -320,10 +318,8 @@ function App() {
           {recognitionGroups.length > 0 && (
             <a href="#recognition" onClick={closeNav}>Recognition</a>
           )}
-          <a href="#theme" onClick={closeNav}>Theme</a>
           {/* <a href="#process" onClick={closeNav}>Process</a> */}
           <a href="#profile" onClick={closeNav}>Profile</a>
-          <a href="#contact" onClick={closeNav}>Contact</a>
         </div>
       </nav>
 
@@ -335,7 +331,7 @@ function App() {
         <div className="hero-shade" />
         <div className="hero-content">
           <h1>{artist.name}</h1>
-          <p className="hero-copy">{artist.heroStatement}</p>
+          <p className="hero-copy">{artist.concentration}</p>
           <div className="hero-actions" aria-label="Primary actions">
             <a className="button button-primary" href="#works">
               Selected Works
@@ -395,7 +391,7 @@ function App() {
 
         {recognitionGroups.length > 0 && (
           <section className="section recognition-section" id="recognition">
-            <div className="section-inner theme-grid">
+            <div className="section-inner intro-grid">
               <div className="section-intro">
                 <p className="eyebrow">Recognition</p>
                 <h2>Awards and honors.</h2>
@@ -461,26 +457,6 @@ function App() {
           </section>
         )}
 
-        <section className="section theme-section" id="theme">
-          <div className="section-inner theme-grid">
-            <div className="section-intro">
-              <p className="eyebrow">Concentration</p>
-              <h2>{artist.concentrationTitle}</h2>
-            </div>
-            <div className="theme-copy">
-              <p>{artist.concentration}</p>
-              <div className="theme-points">
-                {concentrationPoints.map((point) => (
-                  <article className="theme-point" key={point.title}>
-                    <h3>{point.title}</h3>
-                    <p>{point.description}</p>
-                  </article>
-                ))}
-              </div>
-            </div>
-          </div>
-        </section>
-
         {/* Process section hidden until content is ready
         <section className="section process-section" id="process">
           <div className="section-inner">
@@ -523,11 +499,6 @@ function App() {
             <div>
               <p className="eyebrow">Profile</p>
               <h2>Artist profile and statement.</h2>
-              <img
-                className="artist-portrait"
-                src={assetUrl('portrait.jpg')}
-                alt={`Portrait of ${artist.name}`}
-              />
             </div>
             <div className="profile-copy">
               <p>{artist.bio}</p>
@@ -554,29 +525,7 @@ function App() {
 
       </main>
 
-      <footer className="site-footer" id="contact">
-        <div className="section-inner footer-grid">
-          <div>
-            <p className="eyebrow">Contact</p>
-            <h2>Portfolio inquiries.</h2>
-          </div>
-          <div className="footer-actions">
-            {artist.email ? (
-              <a className="button button-primary" href={`mailto:${artist.email}`}>
-                {artist.email}
-                <Mail aria-hidden="true" size={18} strokeWidth={1.8} />
-              </a>
-            ) : (
-              <p className="footer-note">{artist.contactNote}</p>
-            )}
-            {artist.instagram && (
-              <a className="button button-secondary" href={artist.instagram} target="_blank" rel="noreferrer">
-                Instagram
-                <Instagram aria-hidden="true" size={18} strokeWidth={1.8} />
-              </a>
-            )}
-          </div>
-        </div>
+      <footer className="site-footer">
         <div className="section-inner footer-copyright">
           <p>© {new Date().getFullYear()} {artist.name}. All artwork rights reserved.</p>
         </div>
