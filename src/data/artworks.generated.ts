@@ -52,13 +52,13 @@ export const artworks: Artwork[] = [
         "ratio": "1750 / 2400",
         "thumb": "artworks/thumb/bound-by-my-name-1.webp",
         "large": "artworks/large/bound-by-my-name-1.jpg",
-        "caption": "Indoor View"
+        "caption": "Indoor"
       },
       {
         "ratio": "2307 / 2400",
         "thumb": "artworks/thumb/bound-by-my-name-2.webp",
         "large": "artworks/large/bound-by-my-name-2.jpg",
-        "caption": "Outdoor View"
+        "caption": "Outdoor"
       }
     ]
   },
@@ -133,13 +133,13 @@ export const artworks: Artwork[] = [
         "ratio": "2400 / 1800",
         "thumb": "artworks/thumb/what-i-carry-1.webp",
         "large": "artworks/large/what-i-carry-1.jpg",
-        "caption": "Front View"
+        "caption": "Front"
       },
       {
         "ratio": "2400 / 1800",
         "thumb": "artworks/thumb/what-i-carry-2.webp",
         "large": "artworks/large/what-i-carry-2.jpg",
-        "caption": "Angled View"
+        "caption": "Angled"
       }
     ]
   },
@@ -184,13 +184,13 @@ export const artworks: Artwork[] = [
         "ratio": "2400 / 1800",
         "thumb": "artworks/thumb/lunch-1.webp",
         "large": "artworks/large/lunch-1.jpg",
-        "caption": "Front View"
+        "caption": "Front"
       },
       {
         "ratio": "2400 / 1800",
         "thumb": "artworks/thumb/lunch-2.webp",
         "large": "artworks/large/lunch-2.jpg",
-        "caption": "Angled View"
+        "caption": "Angled"
       }
     ]
   },
@@ -213,28 +213,46 @@ export const artworks: Artwork[] = [
     ]
   },
   {
+    "id": "is-it-all-a-fabrication",
+    "title": "Is It All a Fabrication?",
+    "year": "2025",
+    "medium": "Organza, Lace, Alcohol marker, Water-based face paint, Oil-based face paint, Nail polish, Que Bella face mask, My hand",
+    "dimensions": "15 x 12 x 5 inches",
+    "alt": "Mixed material installation titled Is It All a Fabrication? using fabric, cosmetics, and hand-based forms.",
+    "description": "Handkerchief implies China and America, fabric implies fabrication, unsure if I change my reality",
+    "categories": [
+      "Sculpture"
+    ],
+    "award": {
+      "label": "Silver Key",
+      "level": "silver",
+      "competition": "Scholastic Art Awards (Massachusetts Region)"
+    },
+    "images": [
+      {
+        "ratio": "1864 / 2400",
+        "thumb": "artworks/thumb/is-it-all-a-fabrication.webp",
+        "large": "artworks/large/is-it-all-a-fabrication.jpg"
+      }
+    ]
+  },
+  {
     "id": "inherited-in-blue",
     "title": "Inherited in Blue",
     "alt": "Inherited in Blue",
     "categories": [],
     "images": [
       {
-        "ratio": "1864 / 2400",
+        "ratio": "2026 / 2400",
         "thumb": "artworks/thumb/inherited-in-blue-1.webp",
         "large": "artworks/large/inherited-in-blue-1.jpg",
-        "caption": "Full Composition"
-      },
-      {
-        "ratio": "2026 / 2400",
-        "thumb": "artworks/thumb/inherited-in-blue-2.webp",
-        "large": "artworks/large/inherited-in-blue-2.jpg",
-        "caption": "Hand Front"
+        "caption": "Front"
       },
       {
         "ratio": "1723 / 2400",
-        "thumb": "artworks/thumb/inherited-in-blue-3.webp",
-        "large": "artworks/large/inherited-in-blue-3.jpg",
-        "caption": "Hand Back"
+        "thumb": "artworks/thumb/inherited-in-blue-2.webp",
+        "large": "artworks/large/inherited-in-blue-2.jpg",
+        "caption": "Back"
       }
     ]
   },
@@ -510,38 +528,75 @@ export const artworks: Artwork[] = [
     ]
   },
   {
-    "id": "still-life",
-    "title": "Still Life",
+    "id": "fruits",
+    "title": "Fruits",
     "year": "2023",
-    "dimensions": "14 x 11 iches",
-    "alt": "Mixed media sculpture titled Home built with popsicle sticks, newsprint, and colored pencil.",
+    "dimensions": "14 x 11 inches",
+    "alt": "Fruits",
+    "categories": [
+      "Drawing"
+    ],
+    "award": {
+      "label": "Honorable Mention",
+      "level": "honorable",
+      "competition": "Scholastic Art Awards (Massachusetts Region)"
+    },
+    "images": [
+      {
+        "ratio": "2400 / 1793",
+        "thumb": "artworks/thumb/fruits.webp",
+        "large": "artworks/large/fruits.jpg"
+      }
+    ]
+  },
+  {
+    "id": "everyday-objects",
+    "title": "Everyday Objects",
+    "year": "2023",
+    "dimensions": "14 x 11 inches",
+    "alt": "Everyday Objects",
     "categories": [
       "Drawing"
     ],
     "images": [
       {
         "ratio": "2400 / 1806",
-        "thumb": "artworks/thumb/still-life-1.webp",
-        "large": "artworks/large/still-life-1.jpg",
-        "caption": "Scene 1"
-      },
+        "thumb": "artworks/thumb/everyday-objects.webp",
+        "large": "artworks/large/everyday-objects.jpg"
+      }
+    ]
+  },
+  {
+    "id": "vanitas",
+    "title": "Vanitas",
+    "year": "2023",
+    "dimensions": "14 x 11 inches",
+    "alt": "Vanitas",
+    "categories": [
+      "Drawing"
+    ],
+    "images": [
       {
         "ratio": "2400 / 1799",
-        "thumb": "artworks/thumb/still-life-2.webp",
-        "large": "artworks/large/still-life-2.jpg",
-        "caption": "Scene 2"
-      },
+        "thumb": "artworks/thumb/vanitas.webp",
+        "large": "artworks/large/vanitas.jpg"
+      }
+    ]
+  },
+  {
+    "id": "studio-table",
+    "title": "Studio Table",
+    "year": "2023",
+    "dimensions": "14 x 11 inches",
+    "alt": "Studio Table",
+    "categories": [
+      "Drawing"
+    ],
+    "images": [
       {
         "ratio": "2400 / 1885",
-        "thumb": "artworks/thumb/still-life-3.webp",
-        "large": "artworks/large/still-life-3.jpg",
-        "caption": "Scene 3"
-      },
-      {
-        "ratio": "2400 / 1793",
-        "thumb": "artworks/thumb/still-life-4.webp",
-        "large": "artworks/large/still-life-4.jpg",
-        "caption": "Scene 4"
+        "thumb": "artworks/thumb/studio-table.webp",
+        "large": "artworks/large/studio-table.jpg"
       }
     ]
   }

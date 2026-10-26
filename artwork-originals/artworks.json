@@ -81,6 +81,22 @@
       "alt": "Painting titled The Smell of the Past made with acrylic paint, canvas, watercolor paper, watercolor, and hot glue."
     },
     {
+      "title": "Is It All a Fabrication?",
+      "year": "2025",
+      "medium": "Organza, Lace, Alcohol marker, Water-based face paint, Oil-based face paint, Nail polish, Que Bella face mask, My hand",
+      "dimensions": "15 x 12 x 5 inches",
+      "categories": [
+        "Sculpture"
+      ],
+      "description": "Handkerchief implies China and America, fabric implies fabrication, unsure if I change my reality",
+      "alt": "Mixed material installation titled Is It All a Fabrication? using fabric, cosmetics, and hand-based forms.",
+      "award": {
+        "label": "Silver Key",
+        "level": "silver",
+        "competition": "scholastic"
+      }
+    },
+    {
       "title": "Inherited in Blue"
     },
     {
@@ -259,13 +275,41 @@
       "alt": "Mixed media sculpture titled Home built with popsicle sticks, newsprint, and colored pencil."
     },
     {
-      "title": "Still Life",
+      "title": "Fruits",
       "year": "2023",
-      "dimensions": "14 x 11 iches",
+      "dimensions": "14 x 11 inches",
       "categories": [
         "Drawing"
       ],
-      "alt": "Mixed media sculpture titled Home built with popsicle sticks, newsprint, and colored pencil."
+      "award": {
+        "label": "Honorable Mention",
+        "level": "honorable",
+        "competition": "scholastic"
+      }
+    },
+    {
+      "title": "Everyday Objects",
+      "year": "2023",
+      "dimensions": "14 x 11 inches",
+      "categories": [
+        "Drawing"
+      ]
+    },
+    {
+      "title": "Vanitas",
+      "year": "2023",
+      "dimensions": "14 x 11 inches",
+      "categories": [
+        "Drawing"
+      ]
+    },
+    {
+      "title": "Studio Table",
+      "year": "2023",
+      "dimensions": "14 x 11 inches",
+      "categories": [
+        "Drawing"
+      ]
     }
   ]
 }

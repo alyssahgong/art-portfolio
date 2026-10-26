@@ -156,52 +156,6 @@
   line-height: 1.75;
 }
 
-.hero-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.8rem;
-  margin-top: 2rem;
-}
-
-.button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.55rem;
-  min-height: 2.9rem;
-  border: 1px solid transparent;
-  border-radius: 999px;
-  padding: 0.78rem 1rem;
-  font-size: 0.95rem;
-  font-weight: 750;
-  line-height: 1;
-  transition:
-    transform 160ms ease,
-    background 160ms ease,
-    border-color 160ms ease;
-}
-
-.button:hover {
-  transform: translateY(-1px);
-}
-
-.button:focus-visible {
-  transform: translateY(-1px);
-  outline: 2px solid #fffdf7;
-  outline-offset: 3px;
-}
-
-.button-primary {
-  background: #fffdf7;
-  color: var(--ink);
-}
-
-.button-secondary {
-  border-color: rgba(255, 253, 247, 0.42);
-  background: rgba(255, 253, 247, 0.08);
-  color: #fffdf7;
-}
-
 .section {
   padding: 5.5rem 1.5rem;
 }
@@ -229,7 +183,6 @@
   background: var(--paper);
 }
 
-.works-section .eyebrow,
 .process-section .eyebrow {
   color: var(--brick);
 }
@@ -470,10 +423,6 @@
   border-top: 1px solid var(--line);
 }
 
-.recognition-section .eyebrow {
-  color: var(--gold);
-}
-
 .recognition-copy {
   display: grid;
   gap: 2.25rem;
@@ -614,10 +563,6 @@
   grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
   gap: 4rem;
   align-items: start;
-}
-
-.profile-section .eyebrow {
-  color: #d7aa4b;
 }
 
 .profile-copy p {
@@ -1273,7 +1218,6 @@
     scroll-behavior: auto;
   }
 
-  .button:hover,
   .work-card:hover,
   .lightbox-tool:hover {
     transform: none;

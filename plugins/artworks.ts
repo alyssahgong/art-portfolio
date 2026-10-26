@@ -137,6 +137,8 @@ export function artworksPlugin(projectRoot: string): Plugin {
       }
       record.categories = Array.isArray(entry.categories) ? entry.categories : [];
 
+      // Optional `award.view`: the file name (without extension) of the view in the piece's folder that earned it.
+      let awardView: string | undefined;
       if (entry.award !== undefined) {
         const award = entry.award as Record<string, unknown>;
         if (typeof award !== 'object' || award === null) {
@@ -151,6 +153,10 @@ export function artworksPlugin(projectRoot: string): Plugin {
             const name = competitions[award.competition as string];
             if (typeof name === 'string') competition = name;
             else fail(`unknown competition "${award.competition}" — add it to "competitions" at the top of artworks.json.`);
+          }
+          if (award.view !== undefined) {
+            if (typeof award.view === 'string' && award.view.trim()) awardView = award.view.normalize('NFC');
+            else fail('"award.view" must be the file name of one view, e.g. "1 Fruits".');
           }
           record.award = { label: award.label, level: award.level, ...(competition && { competition }) };
         }
@@ -178,7 +184,20 @@ export function artworksPlugin(projectRoot: string): Plugin {
       } else if (matches[0].images.length === 0) {
         fail(`folder "${matches[0].name}" has no images.`);
       } else {
-        records.push({ record, images: matches[0].images });
+        const { images } = matches[0];
+        if (awardView !== undefined && record.award) {
+          const viewIndex = images.findIndex((file) => images.length > 1 && fileTitle(file) === awardView);
+          if (viewIndex === -1) {
+            fail(
+              images.length > 1
+                ? `"award.view" "${awardView}" isn't one of: ${images.map(fileTitle).join(', ')}.`
+                : '"award.view" only applies to a piece with several views (a folder).',
+            );
+          } else {
+            (record.award as Record<string, unknown>).view = viewIndex;
+          }
+        }
+        records.push({ record, images });
       }
     });
 
