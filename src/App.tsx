@@ -629,32 +629,16 @@ function App() {
                 <X aria-hidden="true" size={22} strokeWidth={1.8} />
               </button>
             </div>
-            <div className={`lightbox-figure${lightboxArtwork.images.length > 1 ? ' has-views' : ''}`}>
+            <div className="lightbox-figure">
               <img
                 src={assetUrl(lightboxView.large)}
                 alt={lightboxView.caption ? `${lightboxArtwork.alt} (${lightboxView.caption})` : lightboxArtwork.alt}
               />
               {lightboxArtwork.images.length > 1 && (
-                <div className="lightbox-views">
-                  <p className="lightbox-view-caption" aria-live="polite">
-                    {viewIndex + 1} / {lightboxArtwork.images.length}
-                    {lightboxView.caption && ` · ${lightboxView.caption}`}
-                  </p>
-                  <div className="lightbox-view-thumbs" aria-label="Views of this artwork">
-                    {lightboxArtwork.images.map((view, index) => (
-                      <button
-                        type="button"
-                        className="lightbox-view-thumb"
-                        key={view.thumb}
-                        aria-label={`View ${index + 1}${view.caption ? `: ${view.caption}` : ''}`}
-                        aria-pressed={index === viewIndex}
-                        onClick={() => setViewIndex(index)}
-                      >
-                        <img src={assetUrl(view.thumb)} alt="" />
-                      </button>
-                    ))}
-                  </div>
-                </div>
+                <p className="lightbox-view-count" aria-live="polite">
+                  {viewIndex + 1} / {lightboxArtwork.images.length}
+                  {lightboxView.caption && ` · ${lightboxView.caption}`}
+                </p>
               )}
             </div>
             <div className="lightbox-copy">
@@ -674,6 +658,26 @@ function App() {
                       {lightboxArtwork.award.competition}
                     </span>
                   )}
+                </div>
+              )}
+              {lightboxArtwork.images.length > 1 && (
+                <div className="lightbox-views">
+                  <p className="lightbox-views-label">{lightboxArtwork.images.length} Views</p>
+                  <div className="lightbox-view-thumbs" aria-label="Views of this artwork">
+                    {lightboxArtwork.images.map((view, index) => (
+                      <button
+                        type="button"
+                        className="lightbox-view-thumb"
+                        key={view.thumb}
+                        aria-label={`View ${index + 1}${view.caption ? `: ${view.caption}` : ''}`}
+                        aria-pressed={index === viewIndex}
+                        onClick={() => setViewIndex(index)}
+                      >
+                        <img src={assetUrl(view.thumb)} alt="" />
+                        <span>{view.caption ?? `View ${index + 1}`}</span>
+                      </button>
+                    ))}
+                  </div>
                 </div>
               )}
               {lightboxArtwork.description && (
