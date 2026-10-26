@@ -1,10 +1,11 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import {
   ArrowUpRight,
   // BookOpen, // used by process section
   ChevronLeft,
   ChevronRight,
   ExternalLink,
+  Images,
   Instagram,
   // Layers, // used by process section
   Mail,
@@ -18,15 +19,16 @@ import {
 import './App.css';
 import {
   artist,
-  artworks,
   concentrationPoints,
   // processHighlights, // hidden until process section is ready
   type Artwork,
+  type Award,
 } from './data/portfolio';
-import artworkDimensions from 'virtual:artwork-dimensions';
+import { artworks } from './data/artworks.generated';
 
 const categories = ['All', ...Array.from(new Set(artworks.flatMap((artwork) => artwork.categories)))];
 const fallbackHeroArtwork = artworks.find((artwork) => artwork.featured) ?? artworks[0];
+const heroArtwork = artworks.find((artwork) => artwork.title === artist.heroArtwork) ?? fallbackHeroArtwork;
 // const processIcons = [BookOpen, Layers, Palette]; // hidden until process section is ready
 
 const WORK_GRID_WIDE_QUERY = '(min-width: 921px)';
@@ -34,6 +36,49 @@ const WORK_GRID_WIDE_QUERY = '(min-width: 921px)';
 const COLUMN_REFERENCE_WIDTH = 300;
 const CAPTION_HEIGHT_ESTIMATE = 56;
 const COLUMN_GAP_ESTIMATE = 16;
+
+const AWARD_LEVEL_ORDER: Award['level'][] = ['gold', 'silver', 'honorable'];
+
+type RecognitionGroup = {
+  competition: string;
+  awards: { award: Award; works: Artwork[] }[];
+};
+
+/** Groups awarded artworks by competition, then by award label (highest tier first), keeping portfolio order within each. */
+function getRecognitionGroups(): RecognitionGroup[] {
+  const groups: RecognitionGroup[] = [];
+
+  for (const artwork of artworks) {
+    const { award } = artwork;
+    if (!award) {
+      continue;
+    }
+
+    const competition = award.competition ?? 'Other Recognition';
+    let group = groups.find((entry) => entry.competition === competition);
+    if (!group) {
+      group = { competition, awards: [] };
+      groups.push(group);
+    }
+
+    const entry = group.awards.find((item) => item.award.label === award.label);
+    if (entry) {
+      entry.works.push(artwork);
+    } else {
+      group.awards.push({ award, works: [artwork] });
+    }
+  }
+
+  for (const group of groups) {
+    group.awards.sort(
+      (a, b) => AWARD_LEVEL_ORDER.indexOf(a.award.level) - AWARD_LEVEL_ORDER.indexOf(b.award.level),
+    );
+  }
+
+  return groups;
+}
+
+const recognitionGroups = getRecognitionGroups();
 
 function formatCategories(categories: string[]) {
   return categories.join(' / ');
@@ -66,8 +111,7 @@ function useWorkColumns(visibleArtworks: Artwork[], columnCount: number) {
     const columnHeights = new Array(columnCount).fill(0);
 
     for (const artwork of visibleArtworks) {
-      const ratio = artworkDimensions[artwork.image];
-      const [width, height] = ratio ? ratio.split('/').map(Number) : [4, 5];
+      const [width, height] = artwork.images[0].ratio.split('/').map(Number);
       const cardHeight =
         COLUMN_REFERENCE_WIDTH * (height / width) + CAPTION_HEIGHT_ESTIMATE + COLUMN_GAP_ESTIMATE;
 
@@ -90,9 +134,35 @@ function App() {
   const [activeCategory, setActiveCategory] = useState('All');
   const [lightboxId, setLightboxId] = useState<string | null>(null);
   const [isFullSize, setIsFullSize] = useState(false);
+  /** Which view of a multi-view piece the lightbox shows; reset to the cover whenever the piece changes. */
+  const [viewIndex, setViewIndex] = useState(0);
   const [isNavOpen, setIsNavOpen] = useState(false);
   const hasArtistFacts = Boolean(artist.location || artist.instagram);
-  const heroImage = artist.heroImage || fallbackHeroArtwork.image;
+
+  const categoryTabRefs = useRef(new Map<string, HTMLButtonElement>());
+  const [categoryIndicator, setCategoryIndicator] = useState({ left: 0, width: 0 });
+
+  const setCategoryTabRef = useCallback((category: string, element: HTMLButtonElement | null) => {
+    if (element) {
+      categoryTabRefs.current.set(category, element);
+    } else {
+      categoryTabRefs.current.delete(category);
+    }
+  }, []);
+
+  useLayoutEffect(() => {
+    const updateIndicator = () => {
+      const activeTab = categoryTabRefs.current.get(activeCategory);
+      if (activeTab) {
+        setCategoryIndicator({ left: activeTab.offsetLeft, width: activeTab.offsetWidth });
+      }
+    };
+
+    updateIndicator();
+
+    window.addEventListener('resize', updateIndicator);
+    return () => window.removeEventListener('resize', updateIndicator);
+  }, [activeCategory]);
 
   const visibleArtworks = useMemo(() => {
     if (activeCategory === 'All') {
@@ -110,10 +180,15 @@ function App() {
     [visibleArtworks],
   );
 
+  const hasArtistContext = Boolean(
+    artist.school || artist.graduationYear || artist.courses.length || artist.programs.length,
+  );
+
   const lightboxArtwork = useMemo(
     () => (lightboxId ? artworks.find((artwork) => artwork.id === lightboxId) ?? null : null),
     [lightboxId],
   );
+  const lightboxView = lightboxArtwork ? lightboxArtwork.images[viewIndex] ?? lightboxArtwork.images[0] : null;
 
   const lightboxIndex = lightboxId ? visibleIds.indexOf(lightboxId) : -1;
   const hasPrev = lightboxIndex > 0;
@@ -121,6 +196,7 @@ function App() {
 
   const openLightbox = useCallback((artworkId: string) => {
     setIsFullSize(false);
+    setViewIndex(0);
     setLightboxId(artworkId);
   }, []);
 
@@ -133,12 +209,14 @@ function App() {
 
   const showPrev = useCallback(() => {
     if (lightboxIndex > 0) {
+      setViewIndex(0);
       setLightboxId(visibleIds[lightboxIndex - 1]);
     }
   }, [lightboxIndex, visibleIds]);
 
   const showNext = useCallback(() => {
     if (lightboxIndex >= 0 && lightboxIndex < visibleIds.length - 1) {
+      setViewIndex(0);
       setLightboxId(visibleIds[lightboxIndex + 1]);
     }
   }, [lightboxIndex, visibleIds]);
@@ -172,6 +250,47 @@ function App() {
     };
   }, [lightboxArtwork, closeLightbox, showPrev, showNext, isFullSize]);
 
+  const renderWorkGrid = (columns: Artwork[][]) => (
+    <div className="work-grid">
+      {columns.map((column, columnIndex) => (
+        <div className="work-column" key={columnIndex}>
+          {column.map((artwork) => (
+            <article className="work-card" id={artwork.id} key={artwork.id}>
+              <div className="work-image-frame">
+                <img
+                  className="work-image"
+                  src={assetUrl(artwork.images[0].thumb)}
+                  alt={artwork.alt}
+                  loading="lazy"
+                  decoding="async"
+                  style={{ aspectRatio: artwork.images[0].ratio }}
+                />
+                {artwork.images.length > 1 && (
+                  <span className="work-views">
+                    <Images aria-hidden="true" size={13} strokeWidth={2} />
+                    {artwork.images.length} views
+                  </span>
+                )}
+              </div>
+              <div className="work-caption">
+                <h3>
+                  <button
+                    type="button"
+                    className="work-link"
+                    onClick={() => openLightbox(artwork.id)}
+                    aria-label={`View ${artwork.title} in detail`}
+                  >
+                    {artwork.title}
+                  </button>
+                </h3>
+              </div>
+            </article>
+          ))}
+        </div>
+      ))}
+    </div>
+  );
+
   return (
     <div className="site-shell">
       <a className="skip-link" href="#works">
@@ -198,6 +317,9 @@ function App() {
         </button>
         <div className="nav-links" id="site-nav-links">
           <a href="#works" onClick={closeNav}>Works</a>
+          {recognitionGroups.length > 0 && (
+            <a href="#recognition" onClick={closeNav}>Recognition</a>
+          )}
           <a href="#theme" onClick={closeNav}>Theme</a>
           {/* <a href="#process" onClick={closeNav}>Process</a> */}
           <a href="#profile" onClick={closeNav}>Profile</a>
@@ -208,7 +330,7 @@ function App() {
       <header
         className="hero"
         id="top"
-        style={{ backgroundImage: `url(${assetUrl(heroImage)})` }}
+        style={{ backgroundImage: `url(${assetUrl(heroArtwork.images[0].large)})` }}
       >
         <div className="hero-shade" />
         <div className="hero-content">
@@ -247,12 +369,18 @@ function App() {
                 ))}
               </select>
               <div className="category-tabs" role="tablist" aria-label="Artwork categories">
+                <span
+                  className="category-tab-indicator"
+                  style={{ transform: `translateX(${categoryIndicator.left}px)`, width: categoryIndicator.width }}
+                  aria-hidden="true"
+                />
                 {categories.map((category) => (
                   <button
                     aria-pressed={activeCategory === category}
                     className="category-tab"
                     key={category}
                     onClick={() => setActiveCategory(category)}
+                    ref={(element) => setCategoryTabRef(category, element)}
                     type="button"
                   >
                     {category}
@@ -261,45 +389,77 @@ function App() {
               </div>
             </div>
 
-            <div className="work-grid">
-              {workColumns.map((column, columnIndex) => (
-                <div className="work-column" key={columnIndex}>
-                  {column.map((artwork) => {
-                    const { award } = artwork;
-
-                    return (
-                      <article className="work-card" id={artwork.id} key={artwork.id}>
-                        <img
-                          className="work-image"
-                          src={assetUrl(artwork.image)}
-                          alt={artwork.alt}
-                          style={{ aspectRatio: artworkDimensions[artwork.image] ?? '4 / 5' }}
-                        />
-                        <div className="work-caption">
-                          <h3>
-                            <button
-                              type="button"
-                              className="work-link"
-                              onClick={() => openLightbox(artwork.id)}
-                              aria-label={`View ${artwork.title} in detail`}
-                            >
-                              {artwork.title}
-                            </button>
-                          </h3>
-                          {award && (
-                            <span className={`award-chip award-chip-${award.level}`}>
-                              {award.label}
-                            </span>
-                          )}
-                        </div>
-                      </article>
-                    );
-                  })}
-                </div>
-              ))}
-            </div>
+            {renderWorkGrid(workColumns)}
           </div>
         </section>
+
+        {recognitionGroups.length > 0 && (
+          <section className="section recognition-section" id="recognition">
+            <div className="section-inner theme-grid">
+              <div className="section-intro">
+                <p className="eyebrow">Recognition</p>
+                <h2>Awards and honors.</h2>
+              </div>
+              <div className="recognition-copy">
+                {recognitionGroups.map((group) => (
+                  <article className="recognition-group" key={group.competition}>
+                    <h3>{group.competition}</h3>
+                    <ul className="recognition-list">
+                      {group.awards.map(({ award, works }) => (
+                        <li className="recognition-row" key={award.label}>
+                          <span className={`award-chip award-chip-${award.level}`}>
+                            {award.label}
+                          </span>
+                          <span className="recognition-works">
+                            {works.map((artwork, index) => (
+                              <span key={artwork.id}>
+                                <button
+                                  type="button"
+                                  className="recognition-work"
+                                  onClick={() => openLightbox(artwork.id)}
+                                >
+                                  {artwork.title}
+                                </button>
+                                {index < works.length - 1 && ', '}
+                              </span>
+                            ))}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                  </article>
+                ))}
+
+                {hasArtistContext && (
+                  <dl className="work-details recognition-context">
+                    {(artist.school || artist.graduationYear) && (
+                      <div>
+                        <dt>School</dt>
+                        <dd>
+                          {[artist.school, artist.graduationYear && `Class of ${artist.graduationYear}`]
+                            .filter(Boolean)
+                            .join(', ')}
+                        </dd>
+                      </div>
+                    )}
+                    {artist.courses.length > 0 && (
+                      <div>
+                        <dt>Art Coursework</dt>
+                        <dd>{artist.courses.join(', ')}</dd>
+                      </div>
+                    )}
+                    {artist.programs.length > 0 && (
+                      <div>
+                        <dt>Programs & Exhibitions</dt>
+                        <dd>{artist.programs.join(', ')}</dd>
+                      </div>
+                    )}
+                  </dl>
+                )}
+              </div>
+            </div>
+          </section>
+        )}
 
         <section className="section theme-section" id="theme">
           <div className="section-inner theme-grid">
@@ -339,9 +499,9 @@ function App() {
                   <article className="process-card" key={highlight.title}>
                     <img
                       className="process-image"
-                      src={assetUrl(processArtwork.image)}
+                      src={assetUrl(processArtwork.images[0].thumb)}
                       alt=""
-                      style={{ aspectRatio: artworkDimensions[processArtwork.image] ?? '4 / 5' }}
+                      style={{ aspectRatio: processArtwork.images[0].ratio }}
                     />
                     <div className="process-copy">
                       <span className="icon-chip" aria-hidden="true">
@@ -422,7 +582,7 @@ function App() {
         </div>
       </footer>
 
-      {lightboxArtwork && (
+      {lightboxArtwork && lightboxView && (
         <div
           className={`lightbox${isFullSize ? ' is-fullsize' : ''}`}
           role="dialog"
@@ -437,11 +597,11 @@ function App() {
             <div className="lightbox-toolbar">
               <a
                 className="lightbox-tool"
-                href={assetUrl(lightboxArtwork.image)}
+                href={assetUrl(lightboxView.large)}
                 target="_blank"
                 rel="noreferrer"
-                aria-label="Open original image in a new tab"
-                title="Open original"
+                aria-label="Open full image in a new tab"
+                title="Open image in new tab"
               >
                 <ExternalLink aria-hidden="true" size={18} strokeWidth={1.8} />
               </a>
@@ -469,15 +629,39 @@ function App() {
                 <X aria-hidden="true" size={22} strokeWidth={1.8} />
               </button>
             </div>
-            <div className="lightbox-figure">
+            <div className={`lightbox-figure${lightboxArtwork.images.length > 1 ? ' has-views' : ''}`}>
               <img
-                src={assetUrl(lightboxArtwork.image)}
-                alt={lightboxArtwork.alt}
+                src={assetUrl(lightboxView.large)}
+                alt={lightboxView.caption ? `${lightboxArtwork.alt} (${lightboxView.caption})` : lightboxArtwork.alt}
               />
+              {lightboxArtwork.images.length > 1 && (
+                <div className="lightbox-views">
+                  <p className="lightbox-view-caption" aria-live="polite">
+                    {viewIndex + 1} / {lightboxArtwork.images.length}
+                    {lightboxView.caption && ` · ${lightboxView.caption}`}
+                  </p>
+                  <div className="lightbox-view-thumbs" aria-label="Views of this artwork">
+                    {lightboxArtwork.images.map((view, index) => (
+                      <button
+                        type="button"
+                        className="lightbox-view-thumb"
+                        key={view.thumb}
+                        aria-label={`View ${index + 1}${view.caption ? `: ${view.caption}` : ''}`}
+                        aria-pressed={index === viewIndex}
+                        onClick={() => setViewIndex(index)}
+                      >
+                        <img src={assetUrl(view.thumb)} alt="" />
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
             <div className="lightbox-copy">
               <p className="eyebrow">
-                {formatCategories(lightboxArtwork.categories)} · {lightboxArtwork.year}
+                {[formatCategories(lightboxArtwork.categories), lightboxArtwork.year]
+                  .filter(Boolean)
+                  .join(' · ')}
               </p>
               <h2 id="lightbox-title">{lightboxArtwork.title}</h2>
               {lightboxArtwork.award && (
@@ -495,16 +679,22 @@ function App() {
               {lightboxArtwork.description && (
                 <p className="lightbox-description">{lightboxArtwork.description}</p>
               )}
-              <dl className="work-details lightbox-details">
-                <div>
-                  <dt>Material</dt>
-                  <dd>{lightboxArtwork.medium}</dd>
-                </div>
-                <div>
-                  <dt>Size</dt>
-                  <dd>{lightboxArtwork.dimensions}</dd>
-                </div>
-              </dl>
+              {(lightboxArtwork.medium || lightboxArtwork.dimensions) && (
+                <dl className="work-details lightbox-details">
+                  {lightboxArtwork.medium && (
+                    <div>
+                      <dt>Material</dt>
+                      <dd>{lightboxArtwork.medium}</dd>
+                    </div>
+                  )}
+                  {lightboxArtwork.dimensions && (
+                    <div>
+                      <dt>Size</dt>
+                      <dd>{lightboxArtwork.dimensions}</dd>
+                    </div>
+                  )}
+                </dl>
+              )}
             </div>
             {(hasPrev || hasNext) && (
               <div className="lightbox-nav" aria-label="Artwork navigation">
