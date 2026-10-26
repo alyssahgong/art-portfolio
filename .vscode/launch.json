@@ -13,8 +13,7 @@
       "serverReadyAction": {
         "pattern": "Local:\\s+(https?://127\\.0\\.0\\.1:\\d+/\\S*)",
         "uriFormat": "%s",
-        "action": "debugWithChrome",
-        "webRoot": "${workspaceFolder}"
+        "action": "openExternally"
       }
     }
   ]
