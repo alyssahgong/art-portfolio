@@ -1,4 +1,5 @@
 import { createReadStream, existsSync, mkdirSync, readFileSync, readdirSync, statSync, writeFileSync } from 'node:fs';
+import { execFileSync } from 'node:child_process';
 import { basename, extname, join, relative, sep } from 'node:path';
 import sharp from 'sharp';
 import type { Plugin } from 'vite';
@@ -177,6 +178,8 @@ export function artworksPlugin(projectRoot: string): Plugin {
       }
     });
 
+    warnGitCaseMismatches(warn);
+
     for (const [title, titleSources] of sourcesByTitle) {
       if (!seenTitles.has(title)) {
         warn(`artwork-originals/${titleSources.map((source) => source.name).join(', ')} has no entry in artworks.json and is not shown.`);
@@ -190,6 +193,40 @@ export function artworksPlugin(projectRoot: string): Plugin {
   }
 
   /** `name` is the web file name (without extension) for this image: the artwork id, plus `-<n>` for multi-view pieces. */
+  /**
+   * macOS file names ignore upper/lower case, so git there doesn't notice a case-only rename (e.g. "alyssums.jpeg" →
+   * "Alyssums.jpeg") and keeps committing the old name. The Linux build on GitHub is case-sensitive and then can't find
+   * the image. Compare git's tracked names with the real ones on disk and say how to fix any that differ.
+   */
+  function warnGitCaseMismatches(warn: (message: string) => void) {
+    let tracked: string[];
+    try {
+      tracked = execFileSync('git', ['ls-files', '-z', '--', 'artwork-originals'], { cwd: projectRoot, encoding: 'utf8' })
+        .split('\0')
+        .filter(Boolean);
+    } catch {
+      return; // Not a git checkout, or git isn't installed.
+    }
+
+    const namesInDir = new Map<string, string[]>();
+    const actualName = (dir: string, name: string) => {
+      if (!namesInDir.has(dir)) namesInDir.set(dir, existsSync(join(projectRoot, dir)) ? readdirSync(join(projectRoot, dir)) : []);
+      return namesInDir.get(dir)!.find((entry) => entry.toLowerCase() === name.toLowerCase());
+    };
+
+    for (const path of tracked) {
+      const parts = path.split('/');
+      const actualParts = parts.map((part, index) => actualName(parts.slice(0, index).join('/'), part) ?? part);
+      const actualPath = actualParts.join('/');
+      if (actualPath !== path) {
+        warn(
+          `git has "${path}" but the file is named "${actualPath}" — the GitHub build will fail to find it. ` +
+            `Fix with: git mv -f "${path}" "${actualPath}"`,
+        );
+      }
+    }
+  }
+
   async function processImage(name: string, file: string): Promise<ArtworkImage> {
     const source = join(originalsDir, file);
     const thumb = `artworks/thumb/${name}.webp`;
