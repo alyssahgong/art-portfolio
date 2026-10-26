@@ -2,12 +2,14 @@
 // `artworks.generated.ts` (imported as `artworks`). The types below describe the generated records.
 
 export type Award = {
-  /** Short label shown on the award chip in the lightbox and Recognition section (e.g. "Gold Key", "2nd Place"). */
+  /** Short label shown on the award chip in the lightbox and Awards and Honors section (e.g. "Gold Key", "2nd Place"). */
   label: string;
   /** Visual tier. To add a new tier, extend this union, the list in vite.config.ts, and add a matching `.award-chip-<level>` rule in App.css. */
   level: 'gold' | 'silver' | 'honorable';
   /** Full competition name (resolved from the competition key in artworks.json). */
   competition?: string;
+  /** For a multi-view piece, index into `images` of the view that earned the award (from `award.view` in artworks.json). */
+  view?: number;
 };
 
 /** Web-sized copies generated from the original image. Paths are relative to the site base. */
@@ -58,14 +60,16 @@ export const artist = {
   instagram: '',
   /** Title of the artwork whose image fills the hero. */
   heroArtwork: 'Alyssums',
-  statement:
-    'Recent award-recognized work spans printmaking, mixed media, drawing, painting, and installation, reflecting an ongoing investigation into transformation and the ways cultural traditions are preserved and reimagined through contemporary practice.',
-  bio:
-    `${artistName} is a high school senior artist working across drawing, printmaking, painting, mixed media, sculpture, and installation. Her practice explores Asian identity, cultural memory, and belonging, using layered surfaces, constructed forms, and material experimentation to trace the relationship between personal narrative and broader cultural experience.`,
-  /** Concentration statement, shown in the hero under the artist's name. */
+  /** Artist statement, shown in the Artist Statement section — one string per paragraph. */
+  statement: [
+    'As a child, I filled pages with scribbles simply because I enjoyed creating. Over time I became conscious of technique and wanted to become a “human printer,” turning casual practice into an obsession with perfection. Studying materials and other artists eventually gave me freedom instead: once I realized art was not about photorealism, I let my own voice in. Family history, childhood memories, and personal growth became my subjects, and including myself in my work helped me express thoughts I had kept boxed off in my mind.',
+    'Studying art history taught me that art does not exist in isolation. Volunteering as a sketching facilitator at the Harvard Museum of Natural History and working with the Special Needs Arts Program showed me how art connects people and opens new forms of communication. Art became less about what I could create alone and more about what happens when people create together.',
+    'I now see art as a form of activism. Researching art’s role in the Asian American movement of the late 1960s led me to collaborate with youth artists at the Pao Arts Center on a mural honoring the history of Boston’s Chinatown and the community it is today. I hope to keep using art to preserve histories and challenge assumptions.',
+  ],
+  /** One-sentence summary of the concentration, shown in the hero under the artist's name. */
   concentration:
-    'The portfolio explores Asian American identity and the complexities of cultural belonging through a combination of finished works and process-driven investigations. Using materials such as bamboo, yarn, paper, print surfaces, and reflective elements, the work examines themes of migration, cultural memory, family heritage, and the negotiation between tradition and contemporary life. By layering personal narratives with broader social and cultural histories, the portfolio reflects on how identity is continuously shaped, challenged, and redefined.',
-  /** Optional context for the Recognition section — anything left empty is hidden. */
+    'Exploring Asian American identity and cultural belonging through bamboo, yarn, paper, print, and reflective materials — layering family history and personal memory to ask how identity is shaped, challenged, and redefined.',
+  /** Optional context for the Awards and Honors section — anything left empty is hidden. */
   school: '',
   graduationYear: '',
   courses: [] as string[],

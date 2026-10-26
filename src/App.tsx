@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import {
-  ArrowUpRight,
   // BookOpen, // used by process section
   ChevronLeft,
   ChevronRight,
@@ -77,6 +76,12 @@ function getRecognitionGroups(): RecognitionGroup[] {
 }
 
 const recognitionGroups = getRecognitionGroups();
+
+/** Caption of the view that earned a multi-view piece its award, e.g. "Fruits" for Still Life. */
+function awardViewCaption(artwork: Artwork) {
+  const view = artwork.award?.view;
+  return view === undefined ? undefined : artwork.images[view]?.caption;
+}
 
 function formatCategories(categories: string[]) {
   return categories.join(' / ');
@@ -192,9 +197,9 @@ function App() {
   const hasPrev = lightboxIndex > 0;
   const hasNext = lightboxIndex >= 0 && lightboxIndex < visibleIds.length - 1;
 
-  const openLightbox = useCallback((artworkId: string) => {
+  const openLightbox = useCallback((artworkId: string, view = 0) => {
     setIsFullSize(false);
-    setViewIndex(0);
+    setViewIndex(view);
     setLightboxId(artworkId);
   }, []);
 
@@ -291,7 +296,7 @@ function App() {
 
   return (
     <div className="site-shell">
-      <a className="skip-link" href="#works">
+      <a className="skip-link" href="#portfolio">
         Skip to portfolio
       </a>
       <nav className={`site-nav${isNavOpen ? ' is-open' : ''}`} aria-label="Main navigation">
@@ -314,12 +319,12 @@ function App() {
           )}
         </button>
         <div className="nav-links" id="site-nav-links">
-          <a href="#works" onClick={closeNav}>Works</a>
+          <a href="#portfolio" onClick={closeNav}>Portfolio</a>
           {recognitionGroups.length > 0 && (
-            <a href="#recognition" onClick={closeNav}>Recognition</a>
+            <a href="#awards" onClick={closeNav}>Awards and Honors</a>
           )}
           {/* <a href="#process" onClick={closeNav}>Process</a> */}
-          <a href="#profile" onClick={closeNav}>Profile</a>
+          <a href="#statement" onClick={closeNav}>Artist Statement</a>
         </div>
       </nav>
 
@@ -332,22 +337,15 @@ function App() {
         <div className="hero-content">
           <h1>{artist.name}</h1>
           <p className="hero-copy">{artist.concentration}</p>
-          <div className="hero-actions" aria-label="Primary actions">
-            <a className="button button-primary" href="#works">
-              Selected Works
-              <ArrowUpRight aria-hidden="true" size={18} strokeWidth={1.8} />
-            </a>
-          </div>
         </div>
       </header>
 
       <main>
-        <section className="section works-section" id="works">
+        <section className="section works-section" id="portfolio">
           <div className="section-inner">
             <div className="section-heading">
               <div>
-                <p className="eyebrow">Portfolio</p>
-                <h2>Selected Works</h2>
+                <h2>Portfolio</h2>
               </div>
               <label className="visually-hidden" htmlFor="category-select">
                 Artwork category
@@ -390,11 +388,10 @@ function App() {
         </section>
 
         {recognitionGroups.length > 0 && (
-          <section className="section recognition-section" id="recognition">
+          <section className="section recognition-section" id="awards">
             <div className="section-inner intro-grid">
               <div className="section-intro">
-                <p className="eyebrow">Recognition</p>
-                <h2>Awards and honors.</h2>
+                <h2>Awards and Honors</h2>
               </div>
               <div className="recognition-copy">
                 {recognitionGroups.map((group) => (
@@ -412,9 +409,10 @@ function App() {
                                 <button
                                   type="button"
                                   className="recognition-work"
-                                  onClick={() => openLightbox(artwork.id)}
+                                  onClick={() => openLightbox(artwork.id, artwork.award?.view)}
                                 >
                                   {artwork.title}
+                                  {awardViewCaption(artwork) && ` (${awardViewCaption(artwork)})`}
                                 </button>
                                 {index < works.length - 1 && ', '}
                               </span>
@@ -494,15 +492,15 @@ function App() {
         </section>
         */}
 
-        <section className="section profile-section" id="profile">
+        <section className="section profile-section" id="statement">
           <div className="section-inner profile-grid">
             <div>
-              <p className="eyebrow">Profile</p>
-              <h2>Artist profile and statement.</h2>
+              <h2>Artist Statement</h2>
             </div>
             <div className="profile-copy">
-              <p>{artist.bio}</p>
-              <p>{artist.statement}</p>
+              {artist.statement.map((paragraph) => (
+                <p key={paragraph}>{paragraph}</p>
+              ))}
               {hasArtistFacts && (
                 <div className="artist-facts" aria-label="Artist details">
                   {artist.location && (
@@ -602,9 +600,11 @@ function App() {
                   <span className={`award-chip award-chip-${lightboxArtwork.award.level}`}>
                     {lightboxArtwork.award.label}
                   </span>
-                  {lightboxArtwork.award.competition && (
+                  {(lightboxArtwork.award.competition || awardViewCaption(lightboxArtwork)) && (
                     <span className="lightbox-award-competition">
-                      {lightboxArtwork.award.competition}
+                      {[lightboxArtwork.award.competition, awardViewCaption(lightboxArtwork) && `for ${awardViewCaption(lightboxArtwork)}`]
+                        .filter(Boolean)
+                        .join(' · ')}
                     </span>
                   )}
                 </div>
