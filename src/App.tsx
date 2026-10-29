@@ -544,7 +544,7 @@ function App() {
             <div className="lightbox-toolbar">
               <a
                 className="lightbox-tool"
-                href={assetUrl(lightboxView.large)}
+                href={assetUrl(lightboxView.full)}
                 target="_blank"
                 rel="noreferrer"
                 aria-label="Open full image in a new tab"
@@ -577,8 +577,17 @@ function App() {
               </button>
             </div>
             <div className="lightbox-figure">
+              {/* Full size shows the original at its actual pixel size (one image pixel per screen pixel); scroll to pan. */}
               <img
-                src={assetUrl(lightboxView.large)}
+                src={assetUrl(isFullSize ? lightboxView.full : lightboxView.large)}
+                style={
+                  isFullSize
+                    ? {
+                        width: lightboxView.width / window.devicePixelRatio,
+                        height: lightboxView.height / window.devicePixelRatio,
+                      }
+                    : undefined
+                }
                 alt={lightboxView.caption ? `${lightboxArtwork.alt} (${lightboxView.caption})` : lightboxArtwork.alt}
               />
               {lightboxArtwork.images.length > 1 && (

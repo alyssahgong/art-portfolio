@@ -6,19 +6,25 @@ import type { Plugin } from 'vite';
 
 /** Width (px) of the grid thumbnails — about 1.7x the widest grid card (~370px): close to Retina-sharp at a smaller download. */
 const THUMB_WIDTH = 640;
-/** Longest edge (px) of the lightbox / full-screen image. Originals are never published at full resolution. */
+/** Longest edge (px) of the lightbox and hero image. */
 const LARGE_MAX_EDGE = 2400;
 const THUMB_WEBP_QUALITY = 80;
 const LARGE_JPEG_QUALITY = 85;
+/**
+ * The full-size view is the original JPEG itself, byte for byte, with only its metadata (EXIF incl. GPS location, XMP,
+ * IPTC, comments) cut out — see stripJpegMetadata(). Only originals that can't be copied as-is (not JPEG, or needing
+ * EXIF rotation) are re-encoded, at this quality.
+ */
+const FULL_JPEG_QUALITY = 95;
 /** Changing a setting above must regenerate cached images, so they're part of the cache key. */
-const OUTPUT_SETTINGS = `thumb ${THUMB_WIDTH}w webp q${THUMB_WEBP_QUALITY}, large ${LARGE_MAX_EDGE} jpeg q${LARGE_JPEG_QUALITY}`;
+const OUTPUT_SETTINGS = `thumb ${THUMB_WIDTH}w webp q${THUMB_WEBP_QUALITY}, large ${LARGE_MAX_EDGE} jpeg q${LARGE_JPEG_QUALITY}, full exact copy or jpeg q${FULL_JPEG_QUALITY}`;
 const ORIGINAL_EXTENSIONS = new Set(['.jpg', '.jpeg', '.png', '.tif', '.tiff', '.webp']);
 /** Keep in sync with `Award['level']` in src/data/portfolio.ts. */
 const AWARD_LEVELS = ['gold', 'silver', 'honorable'];
 const TEXT_FIELDS = ['year', 'medium', 'dimensions', 'alt', 'description'] as const;
 const KNOWN_FIELDS = new Set(['title', ...TEXT_FIELDS, 'categories', 'award', 'featured']);
 
-type ArtworkImage = { ratio: string; thumb: string; large: string; caption?: string };
+type ArtworkImage = { ratio: string; thumb: string; large: string; full: string; width: number; height: number; caption?: string };
 type ArtworkRecord = Record<string, unknown> & { id: string };
 
 function isOriginalImage(file: string) {
@@ -35,6 +41,51 @@ function fileTitle(file: string) {
   return basename(file, extname(file)).normalize('NFC');
 }
 
+/**
+ * Copies a JPEG with its metadata removed but the image data untouched (no re-encoding, so no quality loss).
+ * Keeps only the segments needed to show the image as it was: JFIF (APP0), the ICC color profile (APP2) and Adobe color
+ * info (APP14), plus the tables and scans. Drops EXIF and XMP (APP1), IPTC (APP13), comments, every other APPn block,
+ * and anything after the main image (e.g. phone depth maps / gain maps, which can carry their own EXIF).
+ * Returns null if the file isn't a JPEG this can parse, so the caller can fall back to re-encoding.
+ */
+function stripJpegMetadata(input: Buffer): Buffer | null {
+  if (input[0] !== 0xff || input[1] !== 0xd8) return null;
+  const kept: Buffer[] = [input.subarray(0, 2)];
+  let pos = 2;
+  while (pos + 4 <= input.length) {
+    if (input[pos] !== 0xff) return null;
+    const marker = input[pos + 1];
+    if (marker === 0xff) {
+      pos += 1; // Fill byte.
+      continue;
+    }
+    const length = input.readUInt16BE(pos + 2);
+    const end = pos + 2 + length;
+    if (end > input.length) return null;
+    const segment = input.subarray(pos, end);
+
+    if (marker === 0xda) {
+      // Start of scan: from here on it's image data (and, for progressive JPEGs, more tables and scans) up to the end
+      // marker. Inside the entropy-coded data 0xFF is always followed by 0x00 or a restart marker, so the first
+      // 0xFF 0xD9 is the real end of the main image.
+      const eoi = input.indexOf(Buffer.from([0xff, 0xd9]), end);
+      if (eoi === -1) return null;
+      kept.push(input.subarray(pos, eoi + 2));
+      return Buffer.concat(kept);
+    }
+
+    const isApp = marker >= 0xe0 && marker <= 0xef;
+    const keep =
+      (!isApp && marker !== 0xfe) ||
+      marker === 0xe0 ||
+      marker === 0xee ||
+      (marker === 0xe2 && segment.subarray(4, 16).toString('latin1') === 'ICC_PROFILE\0');
+    if (keep) kept.push(segment);
+    pos = end;
+  }
+  return null;
+}
+
 /** URL-safe id from a title, e.g. "Is It All a Fabrication?" → "is-it-all-a-fabrication". */
 function slugify(title: string) {
   return title
@@ -49,8 +100,9 @@ function slugify(title: string) {
  * Builds the artwork data from `artwork-originals/`:
  *   - validates `artworks.json` and matches each entry to the image whose file name is its `title`;
  *     each artwork's `id` (used for page anchors and web image names) is derived from the title
- *   - generates web sizes of each image (`thumb` WebP for the grid, `large` JPEG for the lightbox and hero),
- *     with EXIF orientation applied and all metadata (including GPS location) stripped
+ *   - generates web sizes of each image (`thumb` WebP for the grid, `large` JPEG for the lightbox and hero,
+ *     `full` for the full-size view: the original JPEG unchanged), with EXIF orientation applied and all metadata
+ *     (including GPS location) stripped
  *   - writes `src/data/artworks.generated.ts` with the records and their image info
  * Runs at dev-server start and on every build, and again in dev whenever anything in `artwork-originals/` changes.
  * Generated images are cached in `node_modules/.cache/artwork-images/` and only regenerated when an original changes.
@@ -254,6 +306,7 @@ export function artworksPlugin(projectRoot: string): Plugin {
     const source = join(originalsDir, file);
     const thumb = `artworks/thumb/${name}.webp`;
     const large = `artworks/large/${name}.jpg`;
+    const full = `artworks/full/${name}.jpg`;
     const metaPath = join(cacheDir, `${name}.json`);
     const sourceModified = statSync(source).mtimeMs;
 
@@ -264,7 +317,8 @@ export function artworksPlugin(projectRoot: string): Plugin {
         cached.settings === OUTPUT_SETTINGS &&
         cached.sourceModified === sourceModified &&
         existsSync(join(cacheDir, thumb)) &&
-        existsSync(join(cacheDir, large))
+        existsSync(join(cacheDir, large)) &&
+        existsSync(join(cacheDir, full))
       ) {
         return cached.image;
       }
@@ -274,6 +328,7 @@ export function artworksPlugin(projectRoot: string): Plugin {
 
     mkdirSync(join(cacheDir, 'artworks', 'thumb'), { recursive: true });
     mkdirSync(join(cacheDir, 'artworks', 'large'), { recursive: true });
+    mkdirSync(join(cacheDir, 'artworks', 'full'), { recursive: true });
 
     // rotate() with no arguments applies the EXIF orientation; sharp drops all metadata from outputs by default.
     const input = sharp(source).rotate();
@@ -288,7 +343,27 @@ export function artworksPlugin(projectRoot: string): Plugin {
       .webp({ quality: THUMB_WEBP_QUALITY })
       .toFile(join(cacheDir, thumb));
 
-    const image = { ratio: `${largeInfo.width} / ${largeInfo.height}`, thumb, large };
+    // The original as-is, unless it's not a JPEG or must be rotated: a copy with no EXIF would lose its orientation tag.
+    const metadata = await sharp(source).metadata();
+    const exactCopy = (metadata.orientation ?? 1) === 1 ? stripJpegMetadata(readFileSync(source)) : null;
+    let fullSize = { width: metadata.width, height: metadata.height };
+    if (exactCopy) {
+      writeFileSync(join(cacheDir, full), exactCopy);
+    } else {
+      fullSize = await input
+        .clone()
+        .jpeg({ quality: FULL_JPEG_QUALITY, mozjpeg: true })
+        .toFile(join(cacheDir, full));
+    }
+
+    const image = {
+      ratio: `${largeInfo.width} / ${largeInfo.height}`,
+      thumb,
+      large,
+      full,
+      width: fullSize.width,
+      height: fullSize.height,
+    };
     writeFileSync(metaPath, JSON.stringify({ file, sourceModified, settings: OUTPUT_SETTINGS, image }));
     return image;
   }
@@ -336,7 +411,7 @@ export function artworksPlugin(projectRoot: string): Plugin {
     },
     generateBundle() {
       for (const image of images) {
-        for (const fileName of [image.thumb, image.large]) {
+        for (const fileName of [image.thumb, image.large, image.full]) {
           this.emitFile({ type: 'asset', fileName, source: readFileSync(join(cacheDir, fileName)) });
         }
       }

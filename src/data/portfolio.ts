@@ -18,8 +18,13 @@ export type ArtworkImage = {
   ratio: string;
   /** Grid thumbnail. */
   thumb: string;
-  /** Lightbox, full-screen, and hero image. */
+  /** Lightbox and hero image. */
   large: string;
+  /** Full-size view: the original's resolution, metadata stripped. */
+  full: string;
+  /** Pixel size of `full` (the original, after EXIF rotation). */
+  width: number;
+  height: number;
   /** For a multi-view piece, from the view's file name (e.g. "2 Side.jpg" → "Side"). */
   caption?: string;
 };

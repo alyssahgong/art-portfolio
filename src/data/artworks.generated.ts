@@ -13,18 +13,27 @@ export const artworks: Artwork[] = [
         "ratio": "2400 / 1800",
         "thumb": "artworks/thumb/comfort-in-all-1.webp",
         "large": "artworks/large/comfort-in-all-1.jpg",
+        "full": "artworks/full/comfort-in-all-1.jpg",
+        "width": 5184,
+        "height": 3888,
         "caption": "Full View"
       },
       {
         "ratio": "1883 / 2400",
         "thumb": "artworks/thumb/comfort-in-all-2.webp",
         "large": "artworks/large/comfort-in-all-2.jpg",
+        "full": "artworks/full/comfort-in-all-2.jpg",
+        "width": 2723,
+        "height": 3471,
         "caption": "Scene"
       },
       {
         "ratio": "1800 / 2400",
         "thumb": "artworks/thumb/comfort-in-all-3.webp",
         "large": "artworks/large/comfort-in-all-3.jpg",
+        "full": "artworks/full/comfort-in-all-3.jpg",
+        "width": 3888,
+        "height": 5184,
         "caption": "Pillow"
       }
     ]
@@ -38,7 +47,10 @@ export const artworks: Artwork[] = [
       {
         "ratio": "2400 / 2325",
         "thumb": "artworks/thumb/harvesting.webp",
-        "large": "artworks/large/harvesting.jpg"
+        "large": "artworks/large/harvesting.jpg",
+        "full": "artworks/full/harvesting.jpg",
+        "width": 3609,
+        "height": 3496
       }
     ]
   },
@@ -52,12 +64,18 @@ export const artworks: Artwork[] = [
         "ratio": "1750 / 2400",
         "thumb": "artworks/thumb/bound-by-my-name-1.webp",
         "large": "artworks/large/bound-by-my-name-1.jpg",
+        "full": "artworks/full/bound-by-my-name-1.jpg",
+        "width": 3719,
+        "height": 5100,
         "caption": "Indoor"
       },
       {
         "ratio": "2307 / 2400",
         "thumb": "artworks/thumb/bound-by-my-name-2.webp",
         "large": "artworks/large/bound-by-my-name-2.jpg",
+        "full": "artworks/full/bound-by-my-name-2.jpg",
+        "width": 3483,
+        "height": 3624,
         "caption": "Outdoor"
       }
     ]
@@ -82,7 +100,10 @@ export const artworks: Artwork[] = [
       {
         "ratio": "2329 / 2400",
         "thumb": "artworks/thumb/rooted-in-bamboo.webp",
-        "large": "artworks/large/rooted-in-bamboo.jpg"
+        "large": "artworks/large/rooted-in-bamboo.jpg",
+        "full": "artworks/full/rooted-in-bamboo.jpg",
+        "width": 3785,
+        "height": 3900
       }
     ]
   },
@@ -95,7 +116,10 @@ export const artworks: Artwork[] = [
       {
         "ratio": "2400 / 2293",
         "thumb": "artworks/thumb/roots-we-grow.webp",
-        "large": "artworks/large/roots-we-grow.jpg"
+        "large": "artworks/large/roots-we-grow.jpg",
+        "full": "artworks/full/roots-we-grow.jpg",
+        "width": 3868,
+        "height": 3696
       }
     ]
   },
@@ -119,7 +143,10 @@ export const artworks: Artwork[] = [
       {
         "ratio": "2400 / 2400",
         "thumb": "artworks/thumb/behind-the-screen.webp",
-        "large": "artworks/large/behind-the-screen.jpg"
+        "large": "artworks/large/behind-the-screen.jpg",
+        "full": "artworks/full/behind-the-screen.jpg",
+        "width": 2700,
+        "height": 2700
       }
     ]
   },
@@ -133,12 +160,18 @@ export const artworks: Artwork[] = [
         "ratio": "2400 / 1800",
         "thumb": "artworks/thumb/what-i-carry-1.webp",
         "large": "artworks/large/what-i-carry-1.jpg",
+        "full": "artworks/full/what-i-carry-1.jpg",
+        "width": 5184,
+        "height": 3888,
         "caption": "Front"
       },
       {
         "ratio": "2400 / 1800",
         "thumb": "artworks/thumb/what-i-carry-2.webp",
         "large": "artworks/large/what-i-carry-2.jpg",
+        "full": "artworks/full/what-i-carry-2.jpg",
+        "width": 5184,
+        "height": 3888,
         "caption": "Angled"
       }
     ]
@@ -164,12 +197,18 @@ export const artworks: Artwork[] = [
         "ratio": "2400 / 1177",
         "thumb": "artworks/thumb/home-1.webp",
         "large": "artworks/large/home-1.jpg",
+        "full": "artworks/full/home-1.jpg",
+        "width": 3124,
+        "height": 1532,
         "caption": "Front"
       },
       {
         "ratio": "2400 / 1709",
         "thumb": "artworks/thumb/home-2.webp",
         "large": "artworks/large/home-2.jpg",
+        "full": "artworks/full/home-2.jpg",
+        "width": 2851,
+        "height": 2030,
         "caption": "Back"
       }
     ]
@@ -184,12 +223,18 @@ export const artworks: Artwork[] = [
         "ratio": "2400 / 1800",
         "thumb": "artworks/thumb/lunch-1.webp",
         "large": "artworks/large/lunch-1.jpg",
+        "full": "artworks/full/lunch-1.jpg",
+        "width": 5184,
+        "height": 3888,
         "caption": "Front"
       },
       {
         "ratio": "2400 / 1800",
         "thumb": "artworks/thumb/lunch-2.webp",
         "large": "artworks/large/lunch-2.jpg",
+        "full": "artworks/full/lunch-2.jpg",
+        "width": 5184,
+        "height": 3888,
         "caption": "Angled"
       }
     ]
@@ -208,7 +253,10 @@ export const artworks: Artwork[] = [
       {
         "ratio": "1200 / 1425",
         "thumb": "artworks/thumb/the-smell-of-the-past.webp",
-        "large": "artworks/large/the-smell-of-the-past.jpg"
+        "large": "artworks/large/the-smell-of-the-past.jpg",
+        "full": "artworks/full/the-smell-of-the-past.jpg",
+        "width": 1200,
+        "height": 1425
       }
     ]
   },
@@ -232,7 +280,10 @@ export const artworks: Artwork[] = [
       {
         "ratio": "1864 / 2400",
         "thumb": "artworks/thumb/is-it-all-a-fabrication.webp",
-        "large": "artworks/large/is-it-all-a-fabrication.jpg"
+        "large": "artworks/large/is-it-all-a-fabrication.jpg",
+        "full": "artworks/full/is-it-all-a-fabrication.jpg",
+        "width": 2633,
+        "height": 3390
       }
     ]
   },
@@ -246,12 +297,18 @@ export const artworks: Artwork[] = [
         "ratio": "2026 / 2400",
         "thumb": "artworks/thumb/inherited-in-blue-1.webp",
         "large": "artworks/large/inherited-in-blue-1.jpg",
+        "full": "artworks/full/inherited-in-blue-1.jpg",
+        "width": 3131,
+        "height": 3709,
         "caption": "Front"
       },
       {
         "ratio": "1723 / 2400",
         "thumb": "artworks/thumb/inherited-in-blue-2.webp",
         "large": "artworks/large/inherited-in-blue-2.jpg",
+        "full": "artworks/full/inherited-in-blue-2.jpg",
+        "width": 2085,
+        "height": 2904,
         "caption": "Back"
       }
     ]
@@ -275,7 +332,10 @@ export const artworks: Artwork[] = [
       {
         "ratio": "1635 / 2400",
         "thumb": "artworks/thumb/the-thread-of-life.webp",
-        "large": "artworks/large/the-thread-of-life.jpg"
+        "large": "artworks/large/the-thread-of-life.jpg",
+        "full": "artworks/full/the-thread-of-life.jpg",
+        "width": 2400,
+        "height": 3522
       }
     ]
   },
@@ -298,7 +358,10 @@ export const artworks: Artwork[] = [
       {
         "ratio": "2400 / 1444",
         "thumb": "artworks/thumb/two-worlds.webp",
-        "large": "artworks/large/two-worlds.jpg"
+        "large": "artworks/large/two-worlds.jpg",
+        "full": "artworks/full/two-worlds.jpg",
+        "width": 4985,
+        "height": 3000
       }
     ]
   },
@@ -322,7 +385,10 @@ export const artworks: Artwork[] = [
       {
         "ratio": "1797 / 2400",
         "thumb": "artworks/thumb/salad-bowl-of-america.webp",
-        "large": "artworks/large/salad-bowl-of-america.jpg"
+        "large": "artworks/large/salad-bowl-of-america.jpg",
+        "full": "artworks/full/salad-bowl-of-america.jpg",
+        "width": 3565,
+        "height": 4760
       }
     ]
   },
@@ -345,7 +411,10 @@ export const artworks: Artwork[] = [
       {
         "ratio": "2400 / 954",
         "thumb": "artworks/thumb/alyssums.webp",
-        "large": "artworks/large/alyssums.jpg"
+        "large": "artworks/large/alyssums.jpg",
+        "full": "artworks/full/alyssums.jpg",
+        "width": 7545,
+        "height": 3000
       }
     ]
   },
@@ -368,7 +437,10 @@ export const artworks: Artwork[] = [
       {
         "ratio": "2172 / 2400",
         "thumb": "artworks/thumb/collision.webp",
-        "large": "artworks/large/collision.jpg"
+        "large": "artworks/large/collision.jpg",
+        "full": "artworks/full/collision.jpg",
+        "width": 3150,
+        "height": 3481
       }
     ]
   },
@@ -391,7 +463,10 @@ export const artworks: Artwork[] = [
       {
         "ratio": "2115 / 2400",
         "thumb": "artworks/thumb/fragile.webp",
-        "large": "artworks/large/fragile.jpg"
+        "large": "artworks/large/fragile.jpg",
+        "full": "artworks/full/fragile.jpg",
+        "width": 3442,
+        "height": 3905
       }
     ]
   },
@@ -415,7 +490,10 @@ export const artworks: Artwork[] = [
       {
         "ratio": "2400 / 2371",
         "thumb": "artworks/thumb/origins.webp",
-        "large": "artworks/large/origins.jpg"
+        "large": "artworks/large/origins.jpg",
+        "full": "artworks/full/origins.jpg",
+        "width": 3256,
+        "height": 3216
       }
     ]
   },
@@ -438,7 +516,10 @@ export const artworks: Artwork[] = [
       {
         "ratio": "2098 / 2400",
         "thumb": "artworks/thumb/printed.webp",
-        "large": "artworks/large/printed.jpg"
+        "large": "artworks/large/printed.jpg",
+        "full": "artworks/full/printed.jpg",
+        "width": 3389,
+        "height": 3877
       }
     ]
   },
@@ -461,7 +542,10 @@ export const artworks: Artwork[] = [
       {
         "ratio": "2400 / 2325",
         "thumb": "artworks/thumb/the-roots.webp",
-        "large": "artworks/large/the-roots.jpg"
+        "large": "artworks/large/the-roots.jpg",
+        "full": "artworks/full/the-roots.jpg",
+        "width": 3054,
+        "height": 2958
       }
     ]
   },
@@ -484,7 +568,10 @@ export const artworks: Artwork[] = [
       {
         "ratio": "2400 / 2400",
         "thumb": "artworks/thumb/warped.webp",
-        "large": "artworks/large/warped.jpg"
+        "large": "artworks/large/warped.jpg",
+        "full": "artworks/full/warped.jpg",
+        "width": 4500,
+        "height": 4500
       }
     ]
   },
@@ -506,7 +593,10 @@ export const artworks: Artwork[] = [
       {
         "ratio": "2400 / 1800",
         "thumb": "artworks/thumb/friends.webp",
-        "large": "artworks/large/friends.jpg"
+        "large": "artworks/large/friends.jpg",
+        "full": "artworks/full/friends.jpg",
+        "width": 4898,
+        "height": 3674
       }
     ]
   },
@@ -523,7 +613,10 @@ export const artworks: Artwork[] = [
       {
         "ratio": "1867 / 2400",
         "thumb": "artworks/thumb/self-portrait.webp",
-        "large": "artworks/large/self-portrait.jpg"
+        "large": "artworks/large/self-portrait.jpg",
+        "full": "artworks/full/self-portrait.jpg",
+        "width": 3605,
+        "height": 4633
       }
     ]
   },
@@ -545,7 +638,10 @@ export const artworks: Artwork[] = [
       {
         "ratio": "2400 / 1793",
         "thumb": "artworks/thumb/fruits.webp",
-        "large": "artworks/large/fruits.jpg"
+        "large": "artworks/large/fruits.jpg",
+        "full": "artworks/full/fruits.jpg",
+        "width": 4907,
+        "height": 3666
       }
     ]
   },
@@ -562,7 +658,10 @@ export const artworks: Artwork[] = [
       {
         "ratio": "2400 / 1806",
         "thumb": "artworks/thumb/everyday-objects.webp",
-        "large": "artworks/large/everyday-objects.jpg"
+        "large": "artworks/large/everyday-objects.jpg",
+        "full": "artworks/full/everyday-objects.jpg",
+        "width": 4893,
+        "height": 3682
       }
     ]
   },
@@ -579,7 +678,10 @@ export const artworks: Artwork[] = [
       {
         "ratio": "2400 / 1799",
         "thumb": "artworks/thumb/vanitas.webp",
-        "large": "artworks/large/vanitas.jpg"
+        "large": "artworks/large/vanitas.jpg",
+        "full": "artworks/full/vanitas.jpg",
+        "width": 4909,
+        "height": 3679
       }
     ]
   },
@@ -596,7 +698,10 @@ export const artworks: Artwork[] = [
       {
         "ratio": "2400 / 1885",
         "thumb": "artworks/thumb/studio-table.webp",
-        "large": "artworks/large/studio-table.jpg"
+        "large": "artworks/large/studio-table.jpg",
+        "full": "artworks/full/studio-table.jpg",
+        "width": 4757,
+        "height": 3737
       }
     ]
   }
