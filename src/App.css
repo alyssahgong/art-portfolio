@@ -563,13 +563,6 @@
   color: #fffdf7;
 }
 
-.profile-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
-  gap: 4rem;
-  align-items: start;
-}
-
 .profile-copy p {
   margin: 0 0 1.2rem;
   color: rgba(255, 253, 247, 0.82);
@@ -1081,8 +1074,7 @@
 
 @media (max-width: 920px) {
   .section-heading,
-  .intro-grid,
-  .profile-grid {
+  .intro-grid {
     grid-template-columns: 1fr;
   }
 
