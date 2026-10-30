@@ -6,19 +6,27 @@ import type { Plugin } from 'vite';
 
 /** Width (px) of the grid thumbnails — about 1.7x the widest grid card (~370px): close to Retina-sharp at a smaller download. */
 const THUMB_WIDTH = 640;
-/** Longest edge (px) of the lightbox / full-screen image. Originals are never published at full resolution. */
+/** Longest edge (px) of the lightbox and hero image. */
 const LARGE_MAX_EDGE = 2400;
 const THUMB_WEBP_QUALITY = 80;
 const LARGE_JPEG_QUALITY = 85;
+/**
+ * The full-size view is the original JPEG itself, byte for byte, with only its metadata (EXIF incl. GPS location, XMP,
+ * IPTC, comments) cut out — see stripJpegMetadata(). Only originals that can't be copied as-is (not JPEG, or needing
+ * EXIF rotation) are re-encoded, at this quality.
+ */
+const FULL_JPEG_QUALITY = 95;
 /** Changing a setting above must regenerate cached images, so they're part of the cache key. */
-const OUTPUT_SETTINGS = `thumb ${THUMB_WIDTH}w webp q${THUMB_WEBP_QUALITY}, large ${LARGE_MAX_EDGE} jpeg q${LARGE_JPEG_QUALITY}`;
+const OUTPUT_SETTINGS = `thumb ${THUMB_WIDTH}w webp q${THUMB_WEBP_QUALITY}, large ${LARGE_MAX_EDGE} jpeg q${LARGE_JPEG_QUALITY}, full exact copy or jpeg q${FULL_JPEG_QUALITY}`;
+/** Folder in `artwork-originals/` holding the hero image, when it isn't one of the portfolio pieces. */
+const HERO_DIR = '_hero';
 const ORIGINAL_EXTENSIONS = new Set(['.jpg', '.jpeg', '.png', '.tif', '.tiff', '.webp']);
 /** Keep in sync with `Award['level']` in src/data/portfolio.ts. */
 const AWARD_LEVELS = ['gold', 'silver', 'honorable'];
 const TEXT_FIELDS = ['year', 'medium', 'dimensions', 'alt', 'description'] as const;
 const KNOWN_FIELDS = new Set(['title', ...TEXT_FIELDS, 'categories', 'award', 'featured']);
 
-type ArtworkImage = { ratio: string; thumb: string; large: string; caption?: string };
+type ArtworkImage = { ratio: string; thumb: string; large: string; full: string; width: number; height: number; caption?: string };
 type ArtworkRecord = Record<string, unknown> & { id: string };
 
 function isOriginalImage(file: string) {
@@ -30,9 +38,63 @@ function viewCaption(file: string) {
   return fileTitle(file).replace(/^\d+[\s._-]*/, '').trim() || undefined;
 }
 
+/**
+ * Splits an optional leading order number off a piece's file or folder name: "03 Rooted In Bamboo" → order 3, title
+ * "Rooted In Bamboo". Pieces are shown in this order; unnumbered ones follow, in artworks.json order.
+ */
+function splitOrder(name: string) {
+  const match = /^(\d+)\s+(.+)$/.exec(name);
+  return match ? { order: Number(match[1]), title: match[2] } : { order: Infinity, title: name };
+}
+
 /** File name without its extension, in NFC form (macOS stores accented file names decomposed). */
 function fileTitle(file: string) {
   return basename(file, extname(file)).normalize('NFC');
+}
+
+/**
+ * Copies a JPEG with its metadata removed but the image data untouched (no re-encoding, so no quality loss).
+ * Keeps only the segments needed to show the image as it was: JFIF (APP0), the ICC color profile (APP2) and Adobe color
+ * info (APP14), plus the tables and scans. Drops EXIF and XMP (APP1), IPTC (APP13), comments, every other APPn block,
+ * and anything after the main image (e.g. phone depth maps / gain maps, which can carry their own EXIF).
+ * Returns null if the file isn't a JPEG this can parse, so the caller can fall back to re-encoding.
+ */
+function stripJpegMetadata(input: Buffer): Buffer | null {
+  if (input[0] !== 0xff || input[1] !== 0xd8) return null;
+  const kept: Buffer[] = [input.subarray(0, 2)];
+  let pos = 2;
+  while (pos + 4 <= input.length) {
+    if (input[pos] !== 0xff) return null;
+    const marker = input[pos + 1];
+    if (marker === 0xff) {
+      pos += 1; // Fill byte.
+      continue;
+    }
+    const length = input.readUInt16BE(pos + 2);
+    const end = pos + 2 + length;
+    if (end > input.length) return null;
+    const segment = input.subarray(pos, end);
+
+    if (marker === 0xda) {
+      // Start of scan: from here on it's image data (and, for progressive JPEGs, more tables and scans) up to the end
+      // marker. Inside the entropy-coded data 0xFF is always followed by 0x00 or a restart marker, so the first
+      // 0xFF 0xD9 is the real end of the main image.
+      const eoi = input.indexOf(Buffer.from([0xff, 0xd9]), end);
+      if (eoi === -1) return null;
+      kept.push(input.subarray(pos, eoi + 2));
+      return Buffer.concat(kept);
+    }
+
+    const isApp = marker >= 0xe0 && marker <= 0xef;
+    const keep =
+      (!isApp && marker !== 0xfe) ||
+      marker === 0xe0 ||
+      marker === 0xee ||
+      (marker === 0xe2 && segment.subarray(4, 16).toString('latin1') === 'ICC_PROFILE\0');
+    if (keep) kept.push(segment);
+    pos = end;
+  }
+  return null;
 }
 
 /** URL-safe id from a title, e.g. "Is It All a Fabrication?" → "is-it-all-a-fabrication". */
@@ -41,6 +103,7 @@ function slugify(title: string) {
     .normalize('NFKD')
     .replace(/[̀-ͯ]/g, '')
     .toLowerCase()
+    .replace(/['’]/g, '')
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-|-$/g, '');
 }
@@ -49,8 +112,9 @@ function slugify(title: string) {
  * Builds the artwork data from `artwork-originals/`:
  *   - validates `artworks.json` and matches each entry to the image whose file name is its `title`;
  *     each artwork's `id` (used for page anchors and web image names) is derived from the title
- *   - generates web sizes of each image (`thumb` WebP for the grid, `large` JPEG for the lightbox and hero),
- *     with EXIF orientation applied and all metadata (including GPS location) stripped
+ *   - generates web sizes of each image (`thumb` WebP for the grid, `large` JPEG for the lightbox and hero,
+ *     `full` for the full-size view: the original JPEG unchanged), with EXIF orientation applied and all metadata
+ *     (including GPS location) stripped
  *   - writes `src/data/artworks.generated.ts` with the records and their image info
  * Runs at dev-server start and on every build, and again in dev whenever anything in `artwork-originals/` changes.
  * Generated images are cached in `node_modules/.cache/artwork-images/` and only regenerated when an original changes.
@@ -60,7 +124,8 @@ export function artworksPlugin(projectRoot: string): Plugin {
   const dataFile = join(originalsDir, 'artworks.json');
   const generatedFile = join(projectRoot, 'src', 'data', 'artworks.generated.ts');
   const cacheDir = join(projectRoot, 'node_modules', '.cache', 'artwork-images');
-  let images: ArtworkImage[] = [];
+  /** Generated image paths (in the cache directory) to publish with the build. */
+  let outputFiles: string[] = [];
   let running: Promise<void> = Promise.resolve();
 
   function readArtworks(warn: (message: string) => void) {
@@ -79,17 +144,17 @@ export function artworksPlugin(projectRoot: string): Plugin {
 
     // A piece is either one image named after its title, or a folder named after its title holding
     // several views (sorted by file name; the first is the cover).
-    const sources: { title: string; name: string; images: string[] }[] = [];
+    const sources: { title: string; order: number; name: string; images: string[] }[] = [];
     for (const entry of readdirSync(originalsDir, { withFileTypes: true })) {
-      if (entry.name.startsWith('.')) continue;
+      if (entry.name.startsWith('.') || entry.name === HERO_DIR) continue;
       if (entry.isDirectory()) {
         const images = readdirSync(join(originalsDir, entry.name))
           .filter(isOriginalImage)
           .sort((a, b) => a.localeCompare(b, undefined, { numeric: true }))
           .map((file) => `${entry.name}/${file}`);
-        sources.push({ title: entry.name.normalize('NFC'), name: `${entry.name}/`, images });
+        sources.push({ ...splitOrder(entry.name.normalize('NFC')), name: `${entry.name}/`, images });
       } else if (isOriginalImage(entry.name)) {
-        sources.push({ title: fileTitle(entry.name), name: entry.name, images: [entry.name] });
+        sources.push({ ...splitOrder(fileTitle(entry.name)), name: entry.name, images: [entry.name] });
       }
     }
     const sourcesByTitle = new Map<string, typeof sources>();
@@ -99,7 +164,7 @@ export function artworksPlugin(projectRoot: string): Plugin {
 
     const seenTitles = new Set<string>();
     const titlesById = new Map<string, string>();
-    const records: { record: ArtworkRecord; images: string[] }[] = [];
+    const records: { record: ArtworkRecord; images: string[]; order: number }[] = [];
 
     data.artworks.forEach((entry: Record<string, unknown>, index: number) => {
       const where = `artworks[${index}]${typeof entry?.title === 'string' ? ` ("${entry.title}")` : ''}`;
@@ -197,7 +262,14 @@ export function artworksPlugin(projectRoot: string): Plugin {
             (record.award as Record<string, unknown>).view = viewIndex;
           }
         }
-        records.push({ record, images });
+        records.push({ record, images, order: matches[0].order });
+      }
+    });
+    records.sort((a, b) => a.order - b.order);
+    records.forEach(({ record, order }, index) => {
+      const previous = records[index - 1];
+      if (order !== Infinity && previous?.order === order) {
+        warn(`"${previous.record.title}" and "${record.title}" are both numbered ${order}; they're shown in artworks.json order.`);
       }
     });
 
@@ -254,6 +326,7 @@ export function artworksPlugin(projectRoot: string): Plugin {
     const source = join(originalsDir, file);
     const thumb = `artworks/thumb/${name}.webp`;
     const large = `artworks/large/${name}.jpg`;
+    const full = `artworks/full/${name}.jpg`;
     const metaPath = join(cacheDir, `${name}.json`);
     const sourceModified = statSync(source).mtimeMs;
 
@@ -264,7 +337,8 @@ export function artworksPlugin(projectRoot: string): Plugin {
         cached.settings === OUTPUT_SETTINGS &&
         cached.sourceModified === sourceModified &&
         existsSync(join(cacheDir, thumb)) &&
-        existsSync(join(cacheDir, large))
+        existsSync(join(cacheDir, large)) &&
+        existsSync(join(cacheDir, full))
       ) {
         return cached.image;
       }
@@ -274,6 +348,7 @@ export function artworksPlugin(projectRoot: string): Plugin {
 
     mkdirSync(join(cacheDir, 'artworks', 'thumb'), { recursive: true });
     mkdirSync(join(cacheDir, 'artworks', 'large'), { recursive: true });
+    mkdirSync(join(cacheDir, 'artworks', 'full'), { recursive: true });
 
     // rotate() with no arguments applies the EXIF orientation; sharp drops all metadata from outputs by default.
     const input = sharp(source).rotate();
@@ -288,7 +363,27 @@ export function artworksPlugin(projectRoot: string): Plugin {
       .webp({ quality: THUMB_WEBP_QUALITY })
       .toFile(join(cacheDir, thumb));
 
-    const image = { ratio: `${largeInfo.width} / ${largeInfo.height}`, thumb, large };
+    // The original as-is, unless it's not a JPEG or must be rotated: a copy with no EXIF would lose its orientation tag.
+    const metadata = await sharp(source).metadata();
+    const exactCopy = (metadata.orientation ?? 1) === 1 ? stripJpegMetadata(readFileSync(source)) : null;
+    let fullSize = { width: metadata.width, height: metadata.height };
+    if (exactCopy) {
+      writeFileSync(join(cacheDir, full), exactCopy);
+    } else {
+      fullSize = await input
+        .clone()
+        .jpeg({ quality: FULL_JPEG_QUALITY, mozjpeg: true })
+        .toFile(join(cacheDir, full));
+    }
+
+    const image = {
+      ratio: `${largeInfo.width} / ${largeInfo.height}`,
+      thumb,
+      large,
+      full,
+      width: fullSize.width,
+      height: fullSize.height,
+    };
     writeFileSync(metaPath, JSON.stringify({ file, sourceModified, settings: OUTPUT_SETTINGS, image }));
     return image;
   }
@@ -309,18 +404,31 @@ export function artworksPlugin(projectRoot: string): Plugin {
       }),
     );
 
+    // The hero image: the one image in `_hero/`, if there is one. Otherwise the site uses a piece's image.
+    const heroDir = join(originalsDir, HERO_DIR);
+    const heroFiles = existsSync(heroDir) ? readdirSync(heroDir).filter(isOriginalImage).sort() : [];
+    if (heroFiles.length > 1) warn(`artwork-originals/${HERO_DIR}/ has more than one image; using "${heroFiles[0]}".`);
+    const heroImage = heroFiles.length ? await processImage(HERO_DIR, `${HERO_DIR}/${heroFiles[0]}`) : null;
+
     const source = [
       '// Generated from artwork-originals/artworks.json by plugins/artworks.ts — do not edit by hand.',
       '// Edit artworks.json or the images next to it; this file is rewritten on every dev-server start and build.',
-      "import type { Artwork } from './portfolio';",
+      "import type { Artwork, ArtworkImage } from './portfolio';",
       '',
       `export const artworks: Artwork[] = ${JSON.stringify(artworks, null, 2)};`,
+      '',
+      `/** From artwork-originals/${HERO_DIR}/; null when that folder has no image. */`,
+      `export const heroImage: ArtworkImage | null = ${JSON.stringify(heroImage, null, 2)};`,
       '',
     ].join('\n');
     if (!existsSync(generatedFile) || readFileSync(generatedFile, 'utf8') !== source) {
       writeFileSync(generatedFile, source);
     }
-    images = artworks.flatMap((artwork) => artwork.images);
+    // The hero is only shown at the large size, so its thumbnail and full-size copies aren't published.
+    outputFiles = [
+      ...artworks.flatMap((artwork) => artwork.images.flatMap((image) => [image.thumb, image.large, image.full])),
+      ...(heroImage ? [heroImage.large] : []),
+    ];
   }
 
   /** Runs generate() one at a time, so overlapping file-change events don't write concurrently. */
@@ -335,10 +443,8 @@ export function artworksPlugin(projectRoot: string): Plugin {
       await regenerate((message) => this.warn(message));
     },
     generateBundle() {
-      for (const image of images) {
-        for (const fileName of [image.thumb, image.large]) {
-          this.emitFile({ type: 'asset', fileName, source: readFileSync(join(cacheDir, fileName)) });
-        }
+      for (const fileName of outputFiles) {
+        this.emitFile({ type: 'asset', fileName, source: readFileSync(join(cacheDir, fileName)) });
       }
     },
     configureServer(server) {
