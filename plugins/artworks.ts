@@ -18,6 +18,8 @@ const LARGE_JPEG_QUALITY = 85;
 const FULL_JPEG_QUALITY = 95;
 /** Changing a setting above must regenerate cached images, so they're part of the cache key. */
 const OUTPUT_SETTINGS = `thumb ${THUMB_WIDTH}w webp q${THUMB_WEBP_QUALITY}, large ${LARGE_MAX_EDGE} jpeg q${LARGE_JPEG_QUALITY}, full exact copy or jpeg q${FULL_JPEG_QUALITY}`;
+/** Folder in `artwork-originals/` holding the hero image, when it isn't one of the portfolio pieces. */
+const HERO_DIR = '_hero';
 const ORIGINAL_EXTENSIONS = new Set(['.jpg', '.jpeg', '.png', '.tif', '.tiff', '.webp']);
 /** Keep in sync with `Award['level']` in src/data/portfolio.ts. */
 const AWARD_LEVELS = ['gold', 'silver', 'honorable'];
@@ -34,6 +36,15 @@ function isOriginalImage(file: string) {
 /** Caption from a view's file name inside a piece's folder: "2 Side detail.jpg" → "Side detail"; "2.jpg" → none. */
 function viewCaption(file: string) {
   return fileTitle(file).replace(/^\d+[\s._-]*/, '').trim() || undefined;
+}
+
+/**
+ * Splits an optional leading order number off a piece's file or folder name: "03 Rooted In Bamboo" → order 3, title
+ * "Rooted In Bamboo". Pieces are shown in this order; unnumbered ones follow, in artworks.json order.
+ */
+function splitOrder(name: string) {
+  const match = /^(\d+)\s+(.+)$/.exec(name);
+  return match ? { order: Number(match[1]), title: match[2] } : { order: Infinity, title: name };
 }
 
 /** File name without its extension, in NFC form (macOS stores accented file names decomposed). */
@@ -92,6 +103,7 @@ function slugify(title: string) {
     .normalize('NFKD')
     .replace(/[̀-ͯ]/g, '')
     .toLowerCase()
+    .replace(/['’]/g, '')
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-|-$/g, '');
 }
@@ -112,7 +124,8 @@ export function artworksPlugin(projectRoot: string): Plugin {
   const dataFile = join(originalsDir, 'artworks.json');
   const generatedFile = join(projectRoot, 'src', 'data', 'artworks.generated.ts');
   const cacheDir = join(projectRoot, 'node_modules', '.cache', 'artwork-images');
-  let images: ArtworkImage[] = [];
+  /** Generated image paths (in the cache directory) to publish with the build. */
+  let outputFiles: string[] = [];
   let running: Promise<void> = Promise.resolve();
 
   function readArtworks(warn: (message: string) => void) {
@@ -131,17 +144,17 @@ export function artworksPlugin(projectRoot: string): Plugin {
 
     // A piece is either one image named after its title, or a folder named after its title holding
     // several views (sorted by file name; the first is the cover).
-    const sources: { title: string; name: string; images: string[] }[] = [];
+    const sources: { title: string; order: number; name: string; images: string[] }[] = [];
     for (const entry of readdirSync(originalsDir, { withFileTypes: true })) {
-      if (entry.name.startsWith('.')) continue;
+      if (entry.name.startsWith('.') || entry.name === HERO_DIR) continue;
       if (entry.isDirectory()) {
         const images = readdirSync(join(originalsDir, entry.name))
           .filter(isOriginalImage)
           .sort((a, b) => a.localeCompare(b, undefined, { numeric: true }))
           .map((file) => `${entry.name}/${file}`);
-        sources.push({ title: entry.name.normalize('NFC'), name: `${entry.name}/`, images });
+        sources.push({ ...splitOrder(entry.name.normalize('NFC')), name: `${entry.name}/`, images });
       } else if (isOriginalImage(entry.name)) {
-        sources.push({ title: fileTitle(entry.name), name: entry.name, images: [entry.name] });
+        sources.push({ ...splitOrder(fileTitle(entry.name)), name: entry.name, images: [entry.name] });
       }
     }
     const sourcesByTitle = new Map<string, typeof sources>();
@@ -151,7 +164,7 @@ export function artworksPlugin(projectRoot: string): Plugin {
 
     const seenTitles = new Set<string>();
     const titlesById = new Map<string, string>();
-    const records: { record: ArtworkRecord; images: string[] }[] = [];
+    const records: { record: ArtworkRecord; images: string[]; order: number }[] = [];
 
     data.artworks.forEach((entry: Record<string, unknown>, index: number) => {
       const where = `artworks[${index}]${typeof entry?.title === 'string' ? ` ("${entry.title}")` : ''}`;
@@ -249,7 +262,14 @@ export function artworksPlugin(projectRoot: string): Plugin {
             (record.award as Record<string, unknown>).view = viewIndex;
           }
         }
-        records.push({ record, images });
+        records.push({ record, images, order: matches[0].order });
+      }
+    });
+    records.sort((a, b) => a.order - b.order);
+    records.forEach(({ record, order }, index) => {
+      const previous = records[index - 1];
+      if (order !== Infinity && previous?.order === order) {
+        warn(`"${previous.record.title}" and "${record.title}" are both numbered ${order}; they're shown in artworks.json order.`);
       }
     });
 
@@ -384,18 +404,31 @@ export function artworksPlugin(projectRoot: string): Plugin {
       }),
     );
 
+    // The hero image: the one image in `_hero/`, if there is one. Otherwise the site uses a piece's image.
+    const heroDir = join(originalsDir, HERO_DIR);
+    const heroFiles = existsSync(heroDir) ? readdirSync(heroDir).filter(isOriginalImage).sort() : [];
+    if (heroFiles.length > 1) warn(`artwork-originals/${HERO_DIR}/ has more than one image; using "${heroFiles[0]}".`);
+    const heroImage = heroFiles.length ? await processImage(HERO_DIR, `${HERO_DIR}/${heroFiles[0]}`) : null;
+
     const source = [
       '// Generated from artwork-originals/artworks.json by plugins/artworks.ts — do not edit by hand.',
       '// Edit artworks.json or the images next to it; this file is rewritten on every dev-server start and build.',
-      "import type { Artwork } from './portfolio';",
+      "import type { Artwork, ArtworkImage } from './portfolio';",
       '',
       `export const artworks: Artwork[] = ${JSON.stringify(artworks, null, 2)};`,
+      '',
+      `/** From artwork-originals/${HERO_DIR}/; null when that folder has no image. */`,
+      `export const heroImage: ArtworkImage | null = ${JSON.stringify(heroImage, null, 2)};`,
       '',
     ].join('\n');
     if (!existsSync(generatedFile) || readFileSync(generatedFile, 'utf8') !== source) {
       writeFileSync(generatedFile, source);
     }
-    images = artworks.flatMap((artwork) => artwork.images);
+    // The hero is only shown at the large size, so its thumbnail and full-size copies aren't published.
+    outputFiles = [
+      ...artworks.flatMap((artwork) => artwork.images.flatMap((image) => [image.thumb, image.large, image.full])),
+      ...(heroImage ? [heroImage.large] : []),
+    ];
   }
 
   /** Runs generate() one at a time, so overlapping file-change events don't write concurrently. */
@@ -410,10 +443,8 @@ export function artworksPlugin(projectRoot: string): Plugin {
       await regenerate((message) => this.warn(message));
     },
     generateBundle() {
-      for (const image of images) {
-        for (const fileName of [image.thumb, image.large, image.full]) {
-          this.emitFile({ type: 'asset', fileName, source: readFileSync(join(cacheDir, fileName)) });
-        }
+      for (const fileName of outputFiles) {
+        this.emitFile({ type: 'asset', fileName, source: readFileSync(join(cacheDir, fileName)) });
       }
     },
     configureServer(server) {

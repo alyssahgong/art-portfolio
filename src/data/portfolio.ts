@@ -63,8 +63,11 @@ export const artist = {
   name: artistName,
   location: '',
   instagram: '',
-  /** Title of the artwork whose image fills the hero. */
-  heroArtwork: 'Alyssums',
+  /**
+   * Title of the artwork whose image fills the hero. Only used when `artwork-originals/_hero/` has no image —
+   * the hero is currently Alyssums from there, which isn't one of the portfolio pieces.
+   */
+  heroArtwork: '',
   /** Artist statement, shown in the Artist Statement section — one string per paragraph. */
   statement: [
     'As a child, I filled pages with scribbles simply because I enjoyed creating. Over time I became conscious of technique and wanted to become a “human printer,” turning casual practice into an obsession with perfection. Studying materials and other artists eventually gave me freedom instead: once I realized art was not about photorealism, I let my own voice in. Family history, childhood memories, and personal growth became my subjects, and including myself in my work helped me express thoughts I had kept boxed off in my mind.',

@@ -104,7 +104,12 @@
   position: relative;
   display: grid;
   align-items: end;
-  min-height: 62svh;
+  /*
+   * Height follows the width, in the hero image's own shape (aspect-ratio is set inline from the image), so the whole
+   * image shows instead of being cropped. It still grows to fit the text (e.g. on phones), and is capped on very
+   * wide screens.
+   */
+  max-height: 85svh;
   padding: 4.5rem 1.5rem 3.5rem;
   color: #fffdf7;
   background-position: center;
@@ -1163,7 +1168,6 @@
   }
 
   .hero {
-    min-height: 60svh;
     padding: 3rem 1rem 2.5rem;
   }
 

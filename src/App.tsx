@@ -21,11 +21,12 @@ import {
   type Artwork,
   type Award,
 } from './data/portfolio';
-import { artworks } from './data/artworks.generated';
+import { artworks, heroImage } from './data/artworks.generated';
 
 const categories = ['All', ...Array.from(new Set(artworks.flatMap((artwork) => artwork.categories)))];
 const fallbackHeroArtwork = artworks.find((artwork) => artwork.featured) ?? artworks[0];
 const heroArtwork = artworks.find((artwork) => artwork.title === artist.heroArtwork) ?? fallbackHeroArtwork;
+const heroBackground = heroImage ?? heroArtwork.images[0];
 // const processIcons = [BookOpen, Layers, Palette]; // hidden until process section is ready
 
 const WORK_GRID_WIDE_QUERY = '(min-width: 921px)';
@@ -76,6 +77,9 @@ function getRecognitionGroups(): RecognitionGroup[] {
 }
 
 const recognitionGroups = getRecognitionGroups();
+/** Awards and Honors section (and its nav link) is hidden for now; awards still show in each piece's lightbox. Set to true to bring it back. */
+const SHOW_AWARDS_SECTION = false;
+const showAwardsSection = SHOW_AWARDS_SECTION && recognitionGroups.length > 0;
 
 /** Caption of the view that earned a multi-view piece its award, e.g. "Fruits" for Still Life. */
 function awardViewCaption(artwork: Artwork) {
@@ -320,7 +324,7 @@ function App() {
         </button>
         <div className="nav-links" id="site-nav-links">
           <a href="#portfolio" onClick={closeNav}>Portfolio</a>
-          {recognitionGroups.length > 0 && (
+          {showAwardsSection && (
             <a href="#awards" onClick={closeNav}>Awards and Honors</a>
           )}
           {/* <a href="#process" onClick={closeNav}>Process</a> */}
@@ -331,7 +335,7 @@ function App() {
       <header
         className="hero"
         id="top"
-        style={{ backgroundImage: `url(${assetUrl(heroArtwork.images[0].large)})` }}
+        style={{ backgroundImage: `url(${assetUrl(heroBackground.large)})`, aspectRatio: heroBackground.ratio }}
       >
         <div className="hero-shade" />
         <div className="hero-content">
@@ -387,7 +391,7 @@ function App() {
           </div>
         </section>
 
-        {recognitionGroups.length > 0 && (
+        {showAwardsSection && (
           <section className="section recognition-section" id="awards">
             <div className="section-inner intro-grid">
               <div className="section-intro">

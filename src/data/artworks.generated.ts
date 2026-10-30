@@ -1,82 +1,49 @@
 // Generated from artwork-originals/artworks.json by plugins/artworks.ts — do not edit by hand.
 // Edit artworks.json or the images next to it; this file is rewritten on every dev-server start and build.
-import type { Artwork } from './portfolio';
+import type { Artwork, ArtworkImage } from './portfolio';
 
 export const artworks: Artwork[] = [
   {
-    "id": "comfort-in-all",
-    "title": "Comfort in All",
-    "alt": "Comfort in All",
-    "categories": [],
+    "id": "roots-of-my-ancestors",
+    "title": "Roots of My Ancestors",
+    "year": "2026",
+    "medium": "Oil paint, acrylic paint, canvas, perforated plastic non-slip mat painted with acrylics, needle and thread, yarn, metal mesh, wood panel, knitted garments, cyanotype prints, mirror",
+    "dimensions": "100 x 80 x 40 inches",
+    "description": "I created self-portraits on materials reminiscent of my childhood, juxtaposing these paintings against the backdrop of my mother’s garden, a slice of her life in her hometown. Including myself reflects how my family history lives through me. With this piece, I hope to depict the balance of life as an immigrant.",
+    "alt": "Roots of My Ancestors",
+    "categories": [
+      "Installation"
+    ],
     "images": [
       {
-        "ratio": "2400 / 1800",
-        "thumb": "artworks/thumb/comfort-in-all-1.webp",
-        "large": "artworks/large/comfort-in-all-1.jpg",
-        "full": "artworks/full/comfort-in-all-1.jpg",
-        "width": 5184,
-        "height": 3888,
-        "caption": "Full View"
-      },
-      {
-        "ratio": "1883 / 2400",
-        "thumb": "artworks/thumb/comfort-in-all-2.webp",
-        "large": "artworks/large/comfort-in-all-2.jpg",
-        "full": "artworks/full/comfort-in-all-2.jpg",
-        "width": 2723,
-        "height": 3471,
-        "caption": "Scene"
-      },
-      {
-        "ratio": "1800 / 2400",
-        "thumb": "artworks/thumb/comfort-in-all-3.webp",
-        "large": "artworks/large/comfort-in-all-3.jpg",
-        "full": "artworks/full/comfort-in-all-3.jpg",
-        "width": 3888,
-        "height": 5184,
-        "caption": "Pillow"
+        "ratio": "2400 / 2121",
+        "thumb": "artworks/thumb/roots-of-my-ancestors.webp",
+        "large": "artworks/large/roots-of-my-ancestors.jpg",
+        "full": "artworks/full/roots-of-my-ancestors.jpg",
+        "width": 6148,
+        "height": 5433
       }
     ]
   },
   {
-    "id": "harvesting",
-    "title": "Harvesting",
-    "alt": "Harvesting",
-    "categories": [],
+    "id": "fading-in-and-out",
+    "title": "Fading in and Out",
+    "year": "2026",
+    "medium": "Oil paint, acrylic paint, canvas, perforated plastic non-slip mat painted with acrylics, needle and thread, yarn",
+    "dimensions": "70 x 62 inches",
+    "description": "I used this variety of materials to create the effect that this piece is fragmented. As an Asian American, I often feel like certain parts of my identity fade in and out for the comfort of the people around me. Through this piece, I try to communicate this sense of adaptability to the viewer.",
+    "alt": "Fading in and Out",
+    "categories": [
+      "Painting"
+    ],
     "images": [
       {
-        "ratio": "2400 / 2325",
-        "thumb": "artworks/thumb/harvesting.webp",
-        "large": "artworks/large/harvesting.jpg",
-        "full": "artworks/full/harvesting.jpg",
-        "width": 3609,
-        "height": 3496
-      }
-    ]
-  },
-  {
-    "id": "bound-by-my-name",
-    "title": "Bound by My Name",
-    "alt": "Bound by My Name",
-    "categories": [],
-    "images": [
-      {
-        "ratio": "1750 / 2400",
-        "thumb": "artworks/thumb/bound-by-my-name-1.webp",
-        "large": "artworks/large/bound-by-my-name-1.jpg",
-        "full": "artworks/full/bound-by-my-name-1.jpg",
-        "width": 3719,
-        "height": 5100,
-        "caption": "Indoor"
-      },
-      {
-        "ratio": "2307 / 2400",
-        "thumb": "artworks/thumb/bound-by-my-name-2.webp",
-        "large": "artworks/large/bound-by-my-name-2.jpg",
-        "full": "artworks/full/bound-by-my-name-2.jpg",
-        "width": 3483,
-        "height": 3624,
-        "caption": "Outdoor"
+        "ratio": "2357 / 2400",
+        "thumb": "artworks/thumb/fading-in-and-out.webp",
+        "large": "artworks/large/fading-in-and-out.jpg",
+        "full": "artworks/full/fading-in-and-out.jpg",
+        "width": 5986,
+        "height": 6095
       }
     ]
   },
@@ -84,17 +51,13 @@ export const artworks: Artwork[] = [
     "id": "rooted-in-bamboo",
     "title": "Rooted in Bamboo",
     "year": "2025",
-    "medium": "Canvas, Colored pencils, Acrylic paint",
-    "dimensions": "20 x 16 inches",
+    "medium": "Colored pencil on Bristol paper, canvas, hot glue",
+    "dimensions": "17 x 24 inches",
     "alt": "Mixed media drawing titled Rooted in Bamboo with layered bamboo-like structures and green, cream, and dark forms.",
+    "description": "My cat symbolizes a new chapter of my life since her adoption coincided with my move. Bamboo alludes to my Chinese heritage. I created this piece to encapsulate a feeling of warmth as a result of merging pieces of my identity together rather than viewing them as separate parts of a whole.",
     "categories": [
       "Drawing"
     ],
-    "award": {
-      "label": "Silver Key",
-      "level": "silver",
-      "competition": "Scholastic Art Awards (Massachusetts Region)"
-    },
     "featured": true,
     "images": [
       {
@@ -108,155 +71,56 @@ export const artworks: Artwork[] = [
     ]
   },
   {
-    "id": "roots-we-grow",
-    "title": "Roots We Grow",
-    "alt": "Roots We Grow",
-    "categories": [],
-    "images": [
-      {
-        "ratio": "2400 / 2293",
-        "thumb": "artworks/thumb/roots-we-grow.webp",
-        "large": "artworks/large/roots-we-grow.jpg",
-        "full": "artworks/full/roots-we-grow.jpg",
-        "width": 3868,
-        "height": 3696
-      }
-    ]
-  },
-  {
-    "id": "behind-the-screen",
-    "title": "Behind the Screen",
-    "year": "2025",
-    "medium": "Wood panel, Bamboo strips, Watercolor paper, Yupo paper, Acrylic paint, Gesso, Yarn, Mirror",
-    "dimensions": "40 x 50 inches",
-    "alt": "Painting titled Behind the Screen built from wood panel, bamboo strips, paper, acrylic, yarn, and mirror.",
+    "id": "garden-of-identity",
+    "title": "Garden of Identity",
+    "year": "2026",
+    "medium": "Oil paint, acrylic paint, handmade wood panel, bamboo strips, hand-grown flowers, mirror, watercolor paper, hot glue, hand saw",
+    "dimensions": "50 x 40 x 36 inches",
+    "description": "I painted candid self-portraits, incorporating mirror shards to symbolize my belief that my childhood self had to be shattered for me to grow. Mounted on bamboo and planted outdoors, these paintings represent my growing identity. I hoped to communicate the idea that identity is not a solid concept and is instead evolving.",
+    "alt": "Garden of Identity",
     "categories": [
-      "Painting",
-      "Mixed Media"
+      "Installation"
     ],
-    "award": {
-      "label": "Silver Key",
-      "level": "silver",
-      "competition": "Scholastic Art Awards (Massachusetts Region)"
-    },
     "images": [
       {
-        "ratio": "2400 / 2400",
-        "thumb": "artworks/thumb/behind-the-screen.webp",
-        "large": "artworks/large/behind-the-screen.jpg",
-        "full": "artworks/full/behind-the-screen.jpg",
-        "width": 2700,
-        "height": 2700
+        "ratio": "2400 / 2140",
+        "thumb": "artworks/thumb/garden-of-identity.webp",
+        "large": "artworks/large/garden-of-identity.jpg",
+        "full": "artworks/full/garden-of-identity.jpg",
+        "width": 5144,
+        "height": 4587
       }
     ]
   },
   {
-    "id": "what-i-carry",
-    "title": "What I Carry",
-    "alt": "What I Carry",
-    "categories": [],
+    "id": "societys-box",
+    "title": "Society's Box",
+    "year": "2026",
+    "medium": "Acrylic paint, plaster casting, wooden box",
+    "dimensions": "6 x 8 x 9 inches",
+    "description": "The hands represent society's pressure on my evolving understanding of womanhood and how it differs from restrictive social expectations. Commercial red nail polish contrasts with my mother’s village recipe from China, revealing the hidden stories of womanhood. I made this piece to demonstrate how society does not leave enough space for women to thrive.",
+    "alt": "Society's Box",
+    "categories": [
+      "Sculpture"
+    ],
     "images": [
       {
         "ratio": "2400 / 1800",
-        "thumb": "artworks/thumb/what-i-carry-1.webp",
-        "large": "artworks/large/what-i-carry-1.jpg",
-        "full": "artworks/full/what-i-carry-1.jpg",
+        "thumb": "artworks/thumb/societys-box-1.webp",
+        "large": "artworks/large/societys-box-1.jpg",
+        "full": "artworks/full/societys-box-1.jpg",
         "width": 5184,
         "height": 3888,
         "caption": "Front"
       },
       {
         "ratio": "2400 / 1800",
-        "thumb": "artworks/thumb/what-i-carry-2.webp",
-        "large": "artworks/large/what-i-carry-2.jpg",
-        "full": "artworks/full/what-i-carry-2.jpg",
+        "thumb": "artworks/thumb/societys-box-2.webp",
+        "large": "artworks/large/societys-box-2.jpg",
+        "full": "artworks/full/societys-box-2.jpg",
         "width": 5184,
         "height": 3888,
         "caption": "Angled"
-      }
-    ]
-  },
-  {
-    "id": "home",
-    "title": "Home",
-    "year": "2025",
-    "medium": "Popsicle sticks, Wood glue, Hot glue, Colored pencil, Newsprint",
-    "dimensions": "5.25 x 10 x 6 inches",
-    "alt": "Mixed media sculpture titled Home built with popsicle sticks, newsprint, and colored pencil.",
-    "description": "Reliability of childhood memories and how it changes my reality",
-    "categories": [
-      "Mixed Media"
-    ],
-    "award": {
-      "label": "Honorable Mention",
-      "level": "honorable",
-      "competition": "Scholastic Art Awards (Massachusetts Region)"
-    },
-    "images": [
-      {
-        "ratio": "2400 / 1177",
-        "thumb": "artworks/thumb/home-1.webp",
-        "large": "artworks/large/home-1.jpg",
-        "full": "artworks/full/home-1.jpg",
-        "width": 3124,
-        "height": 1532,
-        "caption": "Front"
-      },
-      {
-        "ratio": "2400 / 1709",
-        "thumb": "artworks/thumb/home-2.webp",
-        "large": "artworks/large/home-2.jpg",
-        "full": "artworks/full/home-2.jpg",
-        "width": 2851,
-        "height": 2030,
-        "caption": "Back"
-      }
-    ]
-  },
-  {
-    "id": "lunch",
-    "title": "Lunch",
-    "alt": "Lunch",
-    "categories": [],
-    "images": [
-      {
-        "ratio": "2400 / 1800",
-        "thumb": "artworks/thumb/lunch-1.webp",
-        "large": "artworks/large/lunch-1.jpg",
-        "full": "artworks/full/lunch-1.jpg",
-        "width": 5184,
-        "height": 3888,
-        "caption": "Front"
-      },
-      {
-        "ratio": "2400 / 1800",
-        "thumb": "artworks/thumb/lunch-2.webp",
-        "large": "artworks/large/lunch-2.jpg",
-        "full": "artworks/full/lunch-2.jpg",
-        "width": 5184,
-        "height": 3888,
-        "caption": "Angled"
-      }
-    ]
-  },
-  {
-    "id": "the-smell-of-the-past",
-    "title": "The Smell of the Past",
-    "year": "2025",
-    "medium": "Acrylic paint, canvas, watercolor paper, watercolor paint, hot glue",
-    "dimensions": "14 x 11 inches",
-    "alt": "Painting titled The Smell of the Past made with acrylic paint, canvas, watercolor paper, watercolor, and hot glue.",
-    "categories": [
-      "Painting"
-    ],
-    "images": [
-      {
-        "ratio": "1200 / 1425",
-        "thumb": "artworks/thumb/the-smell-of-the-past.webp",
-        "large": "artworks/large/the-smell-of-the-past.jpg",
-        "full": "artworks/full/the-smell-of-the-past.jpg",
-        "width": 1200,
-        "height": 1425
       }
     ]
   },
@@ -264,123 +128,272 @@ export const artworks: Artwork[] = [
     "id": "is-it-all-a-fabrication",
     "title": "Is It All a Fabrication?",
     "year": "2025",
-    "medium": "Organza, Lace, Alcohol marker, Water-based face paint, Oil-based face paint, Nail polish, Que Bella face mask, My hand",
-    "dimensions": "15 x 12 x 5 inches",
+    "medium": "Organza, lace, alcohol markers, water-based and oil-based face paint, nail polish, face mask, hand",
+    "dimensions": "11.2 x 11.5 x 7 inches",
     "alt": "Mixed material installation titled Is It All a Fabrication? using fabric, cosmetics, and hand-based forms.",
-    "description": "Handkerchief implies China and America, fabric implies fabrication, unsure if I change my reality",
+    "description": "In this piece, I explored how personal biases distort my perception of reality. Inspired by Ming pots, I painted my hand with face paint and used a face mask solution to mimic the shine of porcelain, a technique popularized by Pat McGrath. The composition suggests my own influence in making up fabrications about the world, represented by the fabric of the handkerchief I created. I hope to reveal my question about what reality truly is through this piece.",
     "categories": [
-      "Sculpture"
+      "Mixed media"
     ],
-    "award": {
-      "label": "Silver Key",
-      "level": "silver",
-      "competition": "Scholastic Art Awards (Massachusetts Region)"
-    },
     "images": [
       {
         "ratio": "1864 / 2400",
-        "thumb": "artworks/thumb/is-it-all-a-fabrication.webp",
-        "large": "artworks/large/is-it-all-a-fabrication.jpg",
-        "full": "artworks/full/is-it-all-a-fabrication.jpg",
+        "thumb": "artworks/thumb/is-it-all-a-fabrication-1.webp",
+        "large": "artworks/large/is-it-all-a-fabrication-1.jpg",
+        "full": "artworks/full/is-it-all-a-fabrication-1.jpg",
         "width": 2633,
-        "height": 3390
+        "height": 3390,
+        "caption": "Composition"
+      },
+      {
+        "ratio": "1723 / 2400",
+        "thumb": "artworks/thumb/is-it-all-a-fabrication-2.webp",
+        "large": "artworks/large/is-it-all-a-fabrication-2.jpg",
+        "full": "artworks/full/is-it-all-a-fabrication-2.jpg",
+        "width": 2085,
+        "height": 2904,
+        "caption": "Hand Back"
+      },
+      {
+        "ratio": "2026 / 2400",
+        "thumb": "artworks/thumb/is-it-all-a-fabrication-3.webp",
+        "large": "artworks/large/is-it-all-a-fabrication-3.jpg",
+        "full": "artworks/full/is-it-all-a-fabrication-3.jpg",
+        "width": 3131,
+        "height": 3709,
+        "caption": "Hand Front"
       }
     ]
   },
   {
-    "id": "inherited-in-blue",
-    "title": "Inherited in Blue",
-    "alt": "Inherited in Blue",
-    "categories": [],
+    "id": "shining-through-the-blue",
+    "title": "Shining Through the Blue",
+    "year": "2026",
+    "medium": "Yarn, crochet, cyanotype, golden GAC 400",
+    "dimensions": "30 x 28 inches",
+    "description": "I altered the stereotypically American T-shirt using crocheted strips and faint family photographs, bridging my two cultural identities. The second view features the Four Gentlemen, motifs my grandmother often depicted in her own art. Through this piece, I aim to reveal to the viewer how family continues shaping my identity despite geographical distance.",
+    "alt": "Shining Through the Blue",
+    "categories": [
+      "Mixed media"
+    ],
     "images": [
       {
-        "ratio": "2026 / 2400",
-        "thumb": "artworks/thumb/inherited-in-blue-1.webp",
-        "large": "artworks/large/inherited-in-blue-1.jpg",
-        "full": "artworks/full/inherited-in-blue-1.jpg",
-        "width": 3131,
-        "height": 3709,
+        "ratio": "2400 / 2316",
+        "thumb": "artworks/thumb/shining-through-the-blue-1.webp",
+        "large": "artworks/large/shining-through-the-blue-1.jpg",
+        "full": "artworks/full/shining-through-the-blue-1.jpg",
+        "width": 4995,
+        "height": 4820,
         "caption": "Front"
       },
       {
-        "ratio": "1723 / 2400",
-        "thumb": "artworks/thumb/inherited-in-blue-2.webp",
-        "large": "artworks/large/inherited-in-blue-2.jpg",
-        "full": "artworks/full/inherited-in-blue-2.jpg",
-        "width": 2085,
-        "height": 2904,
+        "ratio": "2400 / 2335",
+        "thumb": "artworks/thumb/shining-through-the-blue-2.webp",
+        "large": "artworks/large/shining-through-the-blue-2.jpg",
+        "full": "artworks/full/shining-through-the-blue-2.jpg",
+        "width": 4749,
+        "height": 4620,
         "caption": "Back"
       }
     ]
   },
   {
-    "id": "the-thread-of-life",
-    "title": "The Thread of Life",
-    "year": "2025",
-    "medium": "Wood panel, Bamboo strips, Watercolor paper, Yupo paper, BFK paper, Gold leaf, Yarn, Mirror, Colored pencils, Acrylic paint, Watercolor paint, Water-based ink, Gesso, Hot glue, Golden GAC 100",
-    "dimensions": "130 x 100 x 36 inches",
-    "alt": "Large installation titled The Thread of Life with bamboo, paper, yarn, mirror, and layered painted elements.",
+    "id": "lunch",
+    "title": "Lunch",
+    "year": "2026",
+    "medium": "Terracotta, tin foil, newsprint, colored pencil, copper wire, yarn",
+    "dimensions": "28 x 16 x 12 inches",
+    "description": "This piece juxtaposes my lunch and my cousin’s lunch, emphasizing the difference between the two realities. Despite originally photographing these two lunches as separate, I chose to use yarn to suspend my lunch, erasing the lines between our realities. Through this piece, I hope to demonstrate how realities can coexist despite differences.",
+    "alt": "Lunch",
     "categories": [
-      "Installation"
+      "Sculpture"
     ],
-    "award": {
-      "label": "Gold Key",
-      "level": "gold",
-      "competition": "Scholastic Art Awards (Massachusetts Region)"
-    },
     "images": [
       {
-        "ratio": "1635 / 2400",
-        "thumb": "artworks/thumb/the-thread-of-life.webp",
-        "large": "artworks/large/the-thread-of-life.jpg",
-        "full": "artworks/full/the-thread-of-life.jpg",
-        "width": 2400,
-        "height": 3522
+        "ratio": "2400 / 1800",
+        "thumb": "artworks/thumb/lunch.webp",
+        "large": "artworks/large/lunch.jpg",
+        "full": "artworks/full/lunch.jpg",
+        "width": 5184,
+        "height": 3888
       }
     ]
   },
   {
-    "id": "two-worlds",
-    "title": "Two Worlds",
+    "id": "versions-of-me",
+    "title": "Versions of Me",
     "year": "2025",
-    "medium": "Wood Panel, Yarn, Golden Soft Gel, Resin, Mirror, GAC100",
-    "dimensions": "13 x 22 inches",
-    "alt": "Mixed media work titled Two Worlds combining wood panel, yarn, resin, mirror, and gel medium.",
+    "medium": "Wood panel, yarn, acrylic paint, colored pencil, drawing paper",
+    "dimensions": "35 x 38 inches",
+    "description": "In this piece, I chose to combine imagery of my two cats, each representing a different stage in my life according to their adoption dates. I connected these abstract pieces with charcoal drawings of each cat, uniting each stage with a common material.",
+    "alt": "Versions of Me",
     "categories": [
-      "Mixed Media"
+      "Mixed media"
     ],
-    "award": {
-      "label": "Honorable Mention",
-      "level": "honorable",
-      "competition": "Scholastic Art Awards (Massachusetts Region)"
-    },
     "images": [
       {
-        "ratio": "2400 / 1444",
-        "thumb": "artworks/thumb/two-worlds.webp",
-        "large": "artworks/large/two-worlds.jpg",
-        "full": "artworks/full/two-worlds.jpg",
-        "width": 4985,
-        "height": 3000
+        "ratio": "1845 / 2400",
+        "thumb": "artworks/thumb/versions-of-me.webp",
+        "large": "artworks/large/versions-of-me.jpg",
+        "full": "artworks/full/versions-of-me.jpg",
+        "width": 3718,
+        "height": 4836
+      }
+    ]
+  },
+  {
+    "id": "soft",
+    "title": "Soft",
+    "year": "2026",
+    "medium": "Yarn, fabric, thread, beads, fabric dye + paint, water-based resist, terracotta, nail polish",
+    "dimensions": "26 x 50 x 25 inches",
+    "description": "In this piece, I organized some of my previous work, hoping to explore how different aspects of my life conflict with each other in the form of a bed. I made this work to demonstrate the tenderness with which I now view these characteristics.",
+    "alt": "Soft",
+    "categories": [
+      "Installation"
+    ],
+    "images": [
+      {
+        "ratio": "1883 / 2400",
+        "thumb": "artworks/thumb/soft.webp",
+        "large": "artworks/large/soft.jpg",
+        "full": "artworks/full/soft.jpg",
+        "width": 2723,
+        "height": 3471
+      }
+    ]
+  },
+  {
+    "id": "shrouded-by-waves",
+    "title": "Shrouded by Waves",
+    "year": "2025",
+    "medium": "BFK paper, gouache, colored pencil, linocut, water-based ink",
+    "dimensions": "8 x 8 inches",
+    "description": "In this piece, I rendered childhood pictures of myself, layering a linocut of waves as a reference to my old name. I made this piece to depict the rose-tinted glasses that time places over my childhood.",
+    "alt": "Shrouded by Waves",
+    "categories": [
+      "Mixed media"
+    ],
+    "images": [
+      {
+        "ratio": "2284 / 2400",
+        "thumb": "artworks/thumb/shrouded-by-waves.webp",
+        "large": "artworks/large/shrouded-by-waves.jpg",
+        "full": "artworks/full/shrouded-by-waves.jpg",
+        "width": 3932,
+        "height": 4132
+      }
+    ]
+  },
+  {
+    "id": "comfort",
+    "title": "Comfort",
+    "year": "2026",
+    "medium": "Yarn, fabric, thread, beads, fabric dye + paint, water-based resist, terracotta, nail polish, me",
+    "dimensions": "26 x 50 x 25 inches",
+    "description": "Expanding on previous ideas, I made this piece to incorporate myself within the composition and solidify the comfort I find within my identity.",
+    "alt": "Comfort",
+    "categories": [
+      "Installation"
+    ],
+    "images": [
+      {
+        "ratio": "2400 / 1800",
+        "thumb": "artworks/thumb/comfort.webp",
+        "large": "artworks/large/comfort.jpg",
+        "full": "artworks/full/comfort.jpg",
+        "width": 5184,
+        "height": 3888
+      }
+    ]
+  },
+  {
+    "id": "familial-still-life",
+    "title": "Familial Still Life",
+    "year": "2024",
+    "medium": "Graphite",
+    "dimensions": "9 x 12 inches",
+    "description": "This piece was made for my drawing class in school. I reimagined the exercise of still-life drawing by arranging objects representing family members into a triangular, path-like composition. Older generations anchor the bottom, while my sister and I are near the top, the product of those who came before us.",
+    "alt": "Familial Still Life",
+    "categories": [
+      "Drawing"
+    ],
+    "images": [
+      {
+        "ratio": "1865 / 2400",
+        "thumb": "artworks/thumb/familial-still-life.webp",
+        "large": "artworks/large/familial-still-life.jpg",
+        "full": "artworks/full/familial-still-life.jpg",
+        "width": 5944,
+        "height": 7650
+      }
+    ]
+  },
+  {
+    "id": "sketchbook-page",
+    "title": "Sketchbook Page",
+    "year": "2026",
+    "medium": "Colored pencils",
+    "dimensions": "8 x 5 inches",
+    "description": "In my free time, I enjoy volunteering at the Harvard Natural History Museum. This is a spread from my sketchbook where I enjoyed rendering the shine of precious stones.",
+    "alt": "Sketchbook Page",
+    "categories": [
+      "Drawing"
+    ],
+    "images": [
+      {
+        "ratio": "1608 / 2400",
+        "thumb": "artworks/thumb/sketchbook-page.webp",
+        "large": "artworks/large/sketchbook-page.jpg",
+        "full": "artworks/full/sketchbook-page.jpg",
+        "width": 2942,
+        "height": 4391
+      }
+    ]
+  },
+  {
+    "id": "home",
+    "title": "Home?",
+    "year": "2026",
+    "medium": "Popsicle sticks, colored pencil, newsprint, wood glue, hot glue",
+    "dimensions": "10 x 5.25 x 6 inches",
+    "alt": "Mixed media sculpture titled Home? built with popsicle sticks, newsprint, and colored pencil.",
+    "description": "In this piece, I drew memories from the past to represent how they become more conceptual with age. I made this piece to allude to how my current perception of my childhood is different from how it actually was.",
+    "categories": [
+      "Mixed media"
+    ],
+    "images": [
+      {
+        "ratio": "2400 / 1765",
+        "thumb": "artworks/thumb/home-1.webp",
+        "large": "artworks/large/home-1.jpg",
+        "full": "artworks/full/home-1.jpg",
+        "width": 2828,
+        "height": 2080,
+        "caption": "Front"
+      },
+      {
+        "ratio": "2400 / 1787",
+        "thumb": "artworks/thumb/home-2.webp",
+        "large": "artworks/large/home-2.jpg",
+        "full": "artworks/full/home-2.jpg",
+        "width": 2821,
+        "height": 2101,
+        "caption": "Angled"
       }
     ]
   },
   {
     "id": "salad-bowl-of-america",
     "title": "Salad Bowl of America",
-    "year": "2025",
-    "medium": "Painting",
-    "dimensions": "14 x 11 inches",
+    "year": "2026",
+    "medium": "Acrylic paint and collage",
+    "dimensions": "24 x 18 inches",
     "alt": "Painting titled Salad Bowl of America.",
-    "description": "Five hands forming a star, each paired with Smithsonian artifacts from their cultures, against iconic American landmarks, symbolizing that the American people define what it means to be American",
+    "description": "In this piece, I depict the hands of five of my friends, which stem from collages of artifacts from the Smithsonian that align with their respective cultures. I made this piece to convey that there is no fixed definition of what being American is.",
     "categories": [
       "Painting"
     ],
-    "award": {
-      "label": "2nd Place",
-      "level": "silver",
-      "competition": "Congressional Art Competition (Massachusetts 5th District)"
-    },
     "images": [
       {
         "ratio": "1797 / 2400",
@@ -393,316 +406,123 @@ export const artworks: Artwork[] = [
     ]
   },
   {
-    "id": "alyssums",
-    "title": "Alyssums",
-    "year": "2025",
-    "medium": "Legion Drawing Paper, Golden Soft Gel, Water-based Ink, Acrylic Paint, Linocut, GAC100",
-    "dimensions": "11 x 27 inches",
-    "alt": "Printmaking work titled Alyssums made with ink, acrylic paint, linocut, soft gel, and drawing paper.",
+    "id": "from-the-bush",
+    "title": "From the Bush",
+    "year": "2026",
+    "medium": "Wire mesh, Chinese rice paper, acrylic paint, watercolor, golden gel gloss",
+    "dimensions": "23 x 11 x 11 inches",
+    "description": "By manipulating wire mesh that is reminiscent of garden trellises and painting on the paper that I used to wrap this mesh, I created zucchini and its leaves as a reference to my family’s connection with gardening.",
+    "alt": "From the Bush",
     "categories": [
-      "Printmaking"
+      "Mixed media"
     ],
-    "award": {
-      "label": "Gold Key",
-      "level": "gold",
-      "competition": "Scholastic Art Awards (Massachusetts Region)"
-    },
     "images": [
       {
-        "ratio": "2400 / 954",
-        "thumb": "artworks/thumb/alyssums.webp",
-        "large": "artworks/large/alyssums.jpg",
-        "full": "artworks/full/alyssums.jpg",
-        "width": 7545,
-        "height": 3000
+        "ratio": "2400 / 2125",
+        "thumb": "artworks/thumb/from-the-bush.webp",
+        "large": "artworks/large/from-the-bush.jpg",
+        "full": "artworks/full/from-the-bush.jpg",
+        "width": 5530,
+        "height": 4897
       }
     ]
   },
   {
-    "id": "collision",
-    "title": "Collision",
+    "id": "peeking-through",
+    "title": "Peeking Through",
     "year": "2025",
-    "medium": "Legion Drawing Paper, Golden Soft Gel, Linocut",
-    "dimensions": "14 x 11 inches",
-    "alt": "Printmaking work titled Collision made with linocut, soft gel, and drawing paper.",
+    "medium": "BFK paper, legion drawing paper, linocut, water-based ink, golden soft gel, yarn, screws",
+    "dimensions": "32 x 40 inches",
+    "description": "In this piece, I stitched colored pencil portraits of myself together to create a fabric that is my childhood. I layered linoprinted alyssums that represent who I am today. This composition suggests that my childhood self is not gone as I thought before but rather still influencing my current self.",
+    "alt": "Peeking Through",
     "categories": [
-      "Printmaking"
+      "Mixed media"
     ],
-    "award": {
-      "label": "Gold Key",
-      "level": "gold",
-      "competition": "Scholastic Art Awards (Massachusetts Region)"
-    },
     "images": [
       {
-        "ratio": "2172 / 2400",
-        "thumb": "artworks/thumb/collision.webp",
-        "large": "artworks/large/collision.jpg",
-        "full": "artworks/full/collision.jpg",
-        "width": 3150,
-        "height": 3481
+        "ratio": "2116 / 2400",
+        "thumb": "artworks/thumb/peeking-through.webp",
+        "large": "artworks/large/peeking-through.jpg",
+        "full": "artworks/full/peeking-through.jpg",
+        "width": 2926,
+        "height": 3319
       }
     ]
   },
   {
-    "id": "fragile",
-    "title": "Fragile",
-    "year": "2025",
-    "medium": "BFK paper, Canvas, Linocut, Water based ink, Yarn, Screws, Embroidery floss",
-    "dimensions": "40 x 32 inches",
-    "alt": "Mixed media work titled Fragile combining paper, canvas, linocut, yarn, screws, and embroidery floss.",
+    "id": "anxieties",
+    "title": "Anxieties",
+    "year": "2026",
+    "medium": "Metal rings, yarn, crochet, cyanotype",
+    "dimensions": "68 x 72 x 48 inches",
+    "description": "I made this piece to capture how ruminating thoughts can control me by using crochet, a hobby that I often engage in when stressed. The net constricts the shirt and makes it take another shape, similar to how anxiety changes who I am.",
+    "alt": "Anxieties",
     "categories": [
-      "Mixed Media"
+      "Mixed media"
     ],
-    "award": {
-      "label": "Honorable Mention",
-      "level": "honorable",
-      "competition": "Scholastic Art Awards (Massachusetts Region)"
-    },
     "images": [
       {
-        "ratio": "2115 / 2400",
-        "thumb": "artworks/thumb/fragile.webp",
-        "large": "artworks/large/fragile.jpg",
-        "full": "artworks/full/fragile.jpg",
-        "width": 3442,
-        "height": 3905
+        "ratio": "1419 / 2400",
+        "thumb": "artworks/thumb/anxieties.webp",
+        "large": "artworks/large/anxieties.jpg",
+        "full": "artworks/full/anxieties.jpg",
+        "width": 3199,
+        "height": 5409
       }
     ]
   },
   {
-    "id": "origins",
-    "title": "Origins",
-    "year": "2025",
-    "medium": "Polytab, Linocut, Wood panel",
-    "dimensions": "23 x 23 inches",
-    "alt": "Printmaking work titled Origins using polytab, linocut, and wood panel.",
+    "id": "caught",
+    "title": "Caught",
+    "year": "2026",
+    "medium": "Metal rings, yarn, crochet, cyanotype",
+    "dimensions": "72 x 85 x 65 inches",
+    "description": "I made this piece to encapsulate how it feels to be caught between the expectations of two different worlds. The crocheted nets symbolize the anxiety caused by societal expectations. The background of my mother's garden represents familial pressures, while my outfit alludes to expectations on how I should act to conform to American societal rules.",
+    "alt": "Caught",
     "categories": [
-      "Printmaking",
-      "Mixed Media"
+      "Installation"
     ],
-    "award": {
-      "label": "Gold Key",
-      "level": "gold",
-      "competition": "Scholastic Art Awards (Massachusetts Region)"
-    },
     "images": [
       {
-        "ratio": "2400 / 2371",
-        "thumb": "artworks/thumb/origins.webp",
-        "large": "artworks/large/origins.jpg",
-        "full": "artworks/full/origins.jpg",
-        "width": 3256,
-        "height": 3216
+        "ratio": "2307 / 2400",
+        "thumb": "artworks/thumb/caught.webp",
+        "large": "artworks/large/caught.jpg",
+        "full": "artworks/full/caught.jpg",
+        "width": 3431,
+        "height": 3570
       }
     ]
   },
   {
-    "id": "printed",
-    "title": "Printed",
-    "year": "2025",
-    "medium": "BFK paper, Ink, Linocut",
-    "dimensions": "14 x 11 inches",
-    "alt": "Printmaking work titled Printed made with BFK paper, ink, and linocut.",
+    "id": "dinnertime",
+    "title": "Dinnertime",
+    "year": "2026",
+    "medium": "Oil paint, acrylic paint, canvas, perforated plastic non-slip mat painted with acrylics, needle and thread, yarn, metal mesh, wood panel, knitted garments, cyanotype prints, mirror",
+    "dimensions": "100 x 80 x 40 inches",
+    "description": "In this piece, I use my art as a backdrop for a dinner scene that features my parents. I made this piece to solidify my family’s influence on my art by including them as a part of my artwork.",
+    "alt": "Dinnertime",
     "categories": [
-      "Printmaking"
+      "Installation"
     ],
-    "award": {
-      "label": "Honorable Mention",
-      "level": "honorable",
-      "competition": "Scholastic Art Awards (Massachusetts Region)"
-    },
-    "images": [
-      {
-        "ratio": "2098 / 2400",
-        "thumb": "artworks/thumb/printed.webp",
-        "large": "artworks/large/printed.jpg",
-        "full": "artworks/full/printed.jpg",
-        "width": 3389,
-        "height": 3877
-      }
-    ]
-  },
-  {
-    "id": "the-roots",
-    "title": "The Roots",
-    "year": "2025",
-    "medium": "Polytab, Golden soft gel, Yupo paper, Colored pencils, Embroidery floss, Wood panels, Gold leaf",
-    "dimensions": "18 x 18 inches",
-    "alt": "Mixed media work titled The Roots with layered paper, colored pencil, embroidery floss, wood panels, and gold leaf.",
-    "categories": [
-      "Mixed Media"
-    ],
-    "award": {
-      "label": "Honorable Mention",
-      "level": "honorable",
-      "competition": "Scholastic Art Awards (Massachusetts Region)"
-    },
     "images": [
       {
         "ratio": "2400 / 2325",
-        "thumb": "artworks/thumb/the-roots.webp",
-        "large": "artworks/large/the-roots.jpg",
-        "full": "artworks/full/the-roots.jpg",
-        "width": 3054,
-        "height": 2958
-      }
-    ]
-  },
-  {
-    "id": "warped",
-    "title": "Warped",
-    "year": "2025",
-    "medium": "Colored pencils",
-    "dimensions": "15 x 15 inches",
-    "alt": "Colored pencil drawing titled Warped with distorted organic forms and layered blue-green tones.",
-    "categories": [
-      "Drawing"
-    ],
-    "award": {
-      "label": "Honorable Mention",
-      "level": "honorable",
-      "competition": "Scholastic Art Awards (Massachusetts Region)"
-    },
-    "images": [
-      {
-        "ratio": "2400 / 2400",
-        "thumb": "artworks/thumb/warped.webp",
-        "large": "artworks/large/warped.jpg",
-        "full": "artworks/full/warped.jpg",
-        "width": 4500,
-        "height": 4500
-      }
-    ]
-  },
-  {
-    "id": "friends",
-    "title": "Friends",
-    "year": "2023",
-    "dimensions": "14 x 11 iches",
-    "alt": "Mixed media sculpture titled Home built with popsicle sticks, newsprint, and colored pencil.",
-    "categories": [
-      "Drawing"
-    ],
-    "award": {
-      "label": "Honorable Mention",
-      "level": "honorable",
-      "competition": "Scholastic Art Awards (Massachusetts Region)"
-    },
-    "images": [
-      {
-        "ratio": "2400 / 1800",
-        "thumb": "artworks/thumb/friends.webp",
-        "large": "artworks/large/friends.jpg",
-        "full": "artworks/full/friends.jpg",
-        "width": 4898,
-        "height": 3674
-      }
-    ]
-  },
-  {
-    "id": "self-portrait",
-    "title": "Self Portrait",
-    "year": "2023",
-    "dimensions": "14 x 11 iches",
-    "alt": "Mixed media sculpture titled Home built with popsicle sticks, newsprint, and colored pencil.",
-    "categories": [
-      "Drawing"
-    ],
-    "images": [
-      {
-        "ratio": "1867 / 2400",
-        "thumb": "artworks/thumb/self-portrait.webp",
-        "large": "artworks/large/self-portrait.jpg",
-        "full": "artworks/full/self-portrait.jpg",
-        "width": 3605,
-        "height": 4633
-      }
-    ]
-  },
-  {
-    "id": "fruits",
-    "title": "Fruits",
-    "year": "2023",
-    "dimensions": "14 x 11 inches",
-    "alt": "Fruits",
-    "categories": [
-      "Drawing"
-    ],
-    "award": {
-      "label": "Honorable Mention",
-      "level": "honorable",
-      "competition": "Scholastic Art Awards (Massachusetts Region)"
-    },
-    "images": [
-      {
-        "ratio": "2400 / 1793",
-        "thumb": "artworks/thumb/fruits.webp",
-        "large": "artworks/large/fruits.jpg",
-        "full": "artworks/full/fruits.jpg",
-        "width": 4907,
-        "height": 3666
-      }
-    ]
-  },
-  {
-    "id": "everyday-objects",
-    "title": "Everyday Objects",
-    "year": "2023",
-    "dimensions": "14 x 11 inches",
-    "alt": "Everyday Objects",
-    "categories": [
-      "Drawing"
-    ],
-    "images": [
-      {
-        "ratio": "2400 / 1806",
-        "thumb": "artworks/thumb/everyday-objects.webp",
-        "large": "artworks/large/everyday-objects.jpg",
-        "full": "artworks/full/everyday-objects.jpg",
-        "width": 4893,
-        "height": 3682
-      }
-    ]
-  },
-  {
-    "id": "vanitas",
-    "title": "Vanitas",
-    "year": "2023",
-    "dimensions": "14 x 11 inches",
-    "alt": "Vanitas",
-    "categories": [
-      "Drawing"
-    ],
-    "images": [
-      {
-        "ratio": "2400 / 1799",
-        "thumb": "artworks/thumb/vanitas.webp",
-        "large": "artworks/large/vanitas.jpg",
-        "full": "artworks/full/vanitas.jpg",
-        "width": 4909,
-        "height": 3679
-      }
-    ]
-  },
-  {
-    "id": "studio-table",
-    "title": "Studio Table",
-    "year": "2023",
-    "dimensions": "14 x 11 inches",
-    "alt": "Studio Table",
-    "categories": [
-      "Drawing"
-    ],
-    "images": [
-      {
-        "ratio": "2400 / 1885",
-        "thumb": "artworks/thumb/studio-table.webp",
-        "large": "artworks/large/studio-table.jpg",
-        "full": "artworks/full/studio-table.jpg",
-        "width": 4757,
-        "height": 3737
+        "thumb": "artworks/thumb/dinnertime.webp",
+        "large": "artworks/large/dinnertime.jpg",
+        "full": "artworks/full/dinnertime.jpg",
+        "width": 6458,
+        "height": 6255
       }
     ]
   }
 ];
+
+/** From artwork-originals/_hero/; null when that folder has no image. */
+export const heroImage: ArtworkImage | null = {
+  "ratio": "2400 / 954",
+  "thumb": "artworks/thumb/_hero.webp",
+  "large": "artworks/large/_hero.jpg",
+  "full": "artworks/full/_hero.jpg",
+  "width": 7545,
+  "height": 3000
+};
