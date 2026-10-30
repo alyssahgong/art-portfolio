@@ -497,8 +497,8 @@ function App() {
         */}
 
         <section className="section profile-section" id="statement">
-          <div className="section-inner profile-grid">
-            <div>
+          <div className="section-inner">
+            <div className="section-heading">
               <h2>Artist Statement</h2>
             </div>
             <div className="profile-copy">

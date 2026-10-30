@@ -83,12 +83,12 @@ export const artworks: Artwork[] = [
     ],
     "images": [
       {
-        "ratio": "2400 / 2140",
+        "ratio": "2400 / 2288",
         "thumb": "artworks/thumb/garden-of-identity.webp",
         "large": "artworks/large/garden-of-identity.jpg",
         "full": "artworks/full/garden-of-identity.jpg",
-        "width": 5144,
-        "height": 4587
+        "width": 3872,
+        "height": 3691
       }
     ]
   },
