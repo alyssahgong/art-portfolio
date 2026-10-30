@@ -880,11 +880,6 @@
   outline-offset: 3px;
 }
 
-.lightbox-tool[aria-pressed='true'] {
-  background: var(--ink);
-  color: #fffdf7;
-}
-
 .lightbox-nav {
   position: absolute;
   inset: 0;
@@ -935,49 +930,6 @@
 .lightbox-nav button:disabled {
   opacity: 0.4;
   cursor: not-allowed;
-}
-
-.lightbox.is-fullsize {
-  padding: 0;
-}
-
-.lightbox-dialog.is-fullsize {
-  grid-template-columns: 1fr;
-  grid-template-rows: 1fr;
-  width: 100vw;
-  max-width: 100vw;
-  height: 100vh;
-  height: 100dvh;
-  max-height: 100vh;
-  max-height: 100dvh;
-  border-radius: 0;
-}
-
-.lightbox-dialog.is-fullsize .lightbox-copy {
-  display: none;
-}
-
-.lightbox-dialog.is-fullsize .lightbox-figure {
-  display: flex;
-  overflow: auto;
-  padding: 0;
-  background: #0f0e0c;
-}
-
-/* Width and height are set inline to the original's pixel size; margin: auto centers it when it's smaller than the
-   screen, and unlike grid centering it keeps the whole image reachable by scrolling when it's larger. */
-.lightbox-dialog.is-fullsize .lightbox-figure > img {
-  flex: none;
-  margin: auto;
-}
-
-/* Keep the view label in place while the image scrolls. */
-.lightbox-dialog.is-fullsize .lightbox-view-count {
-  position: fixed;
-}
-
-.lightbox-dialog.is-fullsize .lightbox-nav button:last-child {
-  right: 1rem;
 }
 
 /* Stack the lightbox (image above details) on phones and any portrait screen, so a side panel doesn't squeeze the image. */
@@ -1047,14 +999,6 @@
 
   .lightbox-nav button:last-child {
     right: 0.75rem;
-  }
-
-  .lightbox-dialog.is-fullsize {
-    grid-template-rows: 1fr;
-  }
-
-  .lightbox-dialog.is-fullsize .lightbox-nav button {
-    top: 50%;
   }
 }
 
