@@ -78,7 +78,7 @@ export const artist = {
   ],
   /** One-sentence summary of the concentration, shown in the hero under the artist's name. */
   concentration:
-    'Exploring Asian American identity and cultural belonging through bamboo, yarn, paper, print, and reflective materials — layering family history and personal memory to ask how identity is shaped, challenged, and redefined.',
+    'Exploring Asian American identity and cultural belonging through bamboo, yarn, paper, and print, layering family history and personal memory to ask how identity is shaped, challenged, and redefined.',
   /** Optional context for the Awards and Honors section — anything left empty is hidden. */
   school: '',
   graduationYear: '',

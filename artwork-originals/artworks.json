@@ -33,7 +33,6 @@
         "Drawing"
       ],
       "description": "My cat symbolizes a new chapter of my life since her adoption coincided with my move. Bamboo alludes to my Chinese heritage. I created this piece to encapsulate a feeling of warmth as a result of merging pieces of my identity together rather than viewing them as separate parts of a whole.",
-      "alt": "Mixed media drawing titled Rooted in Bamboo with layered bamboo-like structures and green, cream, and dark forms.",
       "featured": true
     },
     {
@@ -49,12 +48,12 @@
     {
       "title": "Society's Box",
       "year": "2026",
-      "medium": "Acrylic paint, plaster casting, wooden box",
+      "medium": "Acrylic paint, plaster casting, wooden box, gold leaf, nail polish, flower petals, rice vinegar",
       "dimensions": "6 x 8 x 9 inches",
       "categories": [
         "Sculpture"
       ],
-      "description": "The hands represent society's pressure on my evolving understanding of womanhood and how it differs from restrictive social expectations. Commercial red nail polish contrasts with my mother’s village recipe from China, revealing the hidden stories of womanhood. I made this piece to demonstrate how society does not leave enough space for women to thrive."
+      "description": "The hands represent society’s pressure on my evolving understanding of womanhood and how it differs from restrictive social expectations. Commercial red nail polish contrasts with my mother’s village recipe from China, revealing the hidden stories of womanhood. I made this piece to demonstrate how society does not leave enough space for women to thrive."
     },
     {
       "title": "Is It All a Fabrication?",
@@ -64,13 +63,12 @@
       "categories": [
         "Mixed media"
       ],
-      "description": "In this piece, I explored how personal biases distort my perception of reality. Inspired by Ming pots, I painted my hand with face paint and used a face mask solution to mimic the shine of porcelain, a technique popularized by Pat McGrath. The composition suggests my own influence in making up fabrications about the world, represented by the fabric of the handkerchief I created. I hope to reveal my question about what reality truly is through this piece.",
-      "alt": "Mixed material installation titled Is It All a Fabrication? using fabric, cosmetics, and hand-based forms."
+      "description": "In this piece, I explored how personal biases distort my perception of reality. Inspired by Ming pots, I painted my hand with face paint and used a face mask solution to mimic the shine of porcelain, a technique popularized by Pat McGrath. The composition suggests my own influence in making up fabrications about the world, represented by the fabric of the handkerchief I created. I hope to reveal my question about what reality truly is through this piece."
     },
     {
       "title": "Shining Through the Blue",
       "year": "2026",
-      "medium": "Yarn, crochet, cyanotype, golden GAC 400",
+      "medium": "Yarn, crochet, cyanotype, golden GAC 400, organza, alcohol markers",
       "dimensions": "30 x 28 inches",
       "categories": [
         "Mixed media"
@@ -145,8 +143,7 @@
       "categories": [
         "Painting"
       ],
-      "description": "In this piece, I depict the hands of five of my friends, which stem from collages of artifacts from the Smithsonian that align with their respective cultures. I made this piece to convey that there is no fixed definition of what being American is.",
-      "alt": "Painting titled Salad Bowl of America."
+      "description": "In this piece, I depict the hands of five of my friends, which stem from collages of artifacts from the Smithsonian that align with their respective cultures. I made this piece to convey that there is no fixed definition of what being American is."
     },
     {
       "title": "Home?",
@@ -156,8 +153,7 @@
       "categories": [
         "Mixed media"
       ],
-      "description": "In this piece, I drew memories from the past to represent how they become more conceptual with age. I made this piece to allude to how my current perception of my childhood is different from how it actually was.",
-      "alt": "Mixed media sculpture titled Home? built with popsicle sticks, newsprint, and colored pencil."
+      "description": "In this piece, I drew memories from the past to represent how they become more conceptual with age. The house is also directly modeled after my childhood home. I made this piece to allude to how my current perception of my childhood is different from how it actually was."
     },
     {
       "title": "From the Bush",
@@ -217,7 +213,7 @@
       "categories": [
         "Drawing"
       ],
-      "description": "In my free time, I enjoy volunteering at the Harvard Natural History Museum. This is a spread from my sketchbook where I enjoyed rendering the shine of precious stones."
+      "description": "In my free time, I enjoy volunteering at the Harvard Museum of Natural History. This is a spread from my sketchbook where I enjoyed rendering the shine of precious stones."
     }
   ]
 }

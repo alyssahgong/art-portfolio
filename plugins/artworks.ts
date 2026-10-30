@@ -40,7 +40,7 @@ function viewCaption(file: string) {
 
 /**
  * Splits an optional leading order number off a piece's file or folder name: "03 Rooted In Bamboo" → order 3, title
- * "Rooted In Bamboo". Pieces are shown in this order; unnumbered ones follow, in artworks.json order.
+ * "Rooted In Bamboo". Without order.txt, pieces are shown in this order; unnumbered ones follow, in artworks.json order.
  */
 function splitOrder(name: string) {
   const match = /^(\d+)\s+(.+)$/.exec(name);
@@ -122,6 +122,7 @@ function slugify(title: string) {
 export function artworksPlugin(projectRoot: string): Plugin {
   const originalsDir = join(projectRoot, 'artwork-originals');
   const dataFile = join(originalsDir, 'artworks.json');
+  const orderFile = join(originalsDir, 'order.txt');
   const generatedFile = join(projectRoot, 'src', 'data', 'artworks.generated.ts');
   const cacheDir = join(projectRoot, 'node_modules', '.cache', 'artwork-images');
   /** Generated image paths (in the cache directory) to publish with the build. */
@@ -265,13 +266,7 @@ export function artworksPlugin(projectRoot: string): Plugin {
         records.push({ record, images, order: matches[0].order });
       }
     });
-    records.sort((a, b) => a.order - b.order);
-    records.forEach(({ record, order }, index) => {
-      const previous = records[index - 1];
-      if (order !== Infinity && previous?.order === order) {
-        warn(`"${previous.record.title}" and "${record.title}" are both numbered ${order}; they're shown in artworks.json order.`);
-      }
-    });
+    sortRecords(records, warn);
 
     warnGitCaseMismatches(warn);
 
@@ -285,6 +280,48 @@ export function artworksPlugin(projectRoot: string): Plugin {
       throw new Error(`artworks.json has ${errors.length} problem(s):\n  - ${errors.join('\n  - ')}`);
     }
     return records;
+  }
+
+  /**
+   * Puts the pieces in page order. With `order.txt` (one piece per line, top to bottom; blank lines and `#` comments
+   * ignored), that's the order; pieces it doesn't list follow at the end. Without it, the file names' leading numbers
+   * decide, then artworks.json order.
+   */
+  function sortRecords(records: { record: ArtworkRecord; order: number }[], warn: (message: string) => void) {
+    const byNumber = (a: { order: number }, b: { order: number }) => a.order - b.order;
+    if (!existsSync(orderFile)) {
+      records.sort(byNumber);
+      records.forEach(({ record, order }, index) => {
+        const previous = records[index - 1];
+        if (order !== Infinity && previous?.order === order) {
+          warn(`"${previous.record.title}" and "${record.title}" are both numbered ${order}; they're shown in artworks.json order.`);
+        }
+      });
+      return;
+    }
+
+    const titles = new Set(records.map(({ record }) => record.title as string));
+    const positions = new Map<string, number>();
+    readFileSync(orderFile, 'utf8')
+      .normalize('NFC')
+      .split(/\r?\n/)
+      .forEach((rawLine, index) => {
+        // A line can be the title or the file/folder name as it appears in Finder ("03 Rooted in Bamboo.jpg").
+        let line = rawLine.trim().replace(/\/$/, '');
+        if (!line || line.startsWith('#')) return;
+        if (ORIGINAL_EXTENSIONS.has(extname(line).toLowerCase())) line = fileTitle(line);
+        const { title } = titles.has(line) ? { title: line } : splitOrder(line);
+        const where = `order.txt line ${index + 1}`;
+        if (!titles.has(title)) warn(`${where}: "${rawLine.trim()}" doesn't match any piece in artworks.json; ignored.`);
+        else if (positions.has(title)) warn(`${where}: "${title}" is listed more than once; using its first place.`);
+        else positions.set(title, positions.size);
+      });
+
+    for (const title of titles) {
+      if (!positions.has(title)) warn(`"${title}" isn't in order.txt; it's shown at the end.`);
+    }
+    const position = ({ record }: { record: ArtworkRecord }) => positions.get(record.title as string) ?? Infinity;
+    records.sort((a, b) => position(a) - position(b) || byNumber(a, b));
   }
 
   /** `name` is the web file name (without extension) for this image: the artwork id, plus `-<n>` for multi-view pieces. */
