@@ -8,9 +8,7 @@ import {
   Instagram,
   // Layers, // used by process section
   Menu,
-  Maximize2,
   MapPin,
-  Minimize2,
   // Palette, // used by process section
   X,
 } from 'lucide-react';
@@ -140,7 +138,6 @@ function useWorkColumns(visibleArtworks: Artwork[], columnCount: number) {
 function App() {
   const [activeCategory, setActiveCategory] = useState('All');
   const [lightboxId, setLightboxId] = useState<string | null>(null);
-  const [isFullSize, setIsFullSize] = useState(false);
   /** Which view of a multi-view piece the lightbox shows; reset to the cover whenever the piece changes. */
   const [viewIndex, setViewIndex] = useState(0);
   const [isNavOpen, setIsNavOpen] = useState(false);
@@ -202,14 +199,12 @@ function App() {
   const hasNext = lightboxIndex >= 0 && lightboxIndex < visibleIds.length - 1;
 
   const openLightbox = useCallback((artworkId: string, view = 0) => {
-    setIsFullSize(false);
     setViewIndex(view);
     setLightboxId(artworkId);
   }, []);
 
   const closeLightbox = useCallback(() => {
     setLightboxId(null);
-    setIsFullSize(false);
   }, []);
 
   const closeNav = useCallback(() => setIsNavOpen(false), []);
@@ -235,11 +230,7 @@ function App() {
 
     const handleKey = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
-        if (isFullSize) {
-          setIsFullSize(false);
-        } else {
-          closeLightbox();
-        }
+        closeLightbox();
       } else if (event.key === 'ArrowLeft') {
         showPrev();
       } else if (event.key === 'ArrowRight') {
@@ -255,7 +246,7 @@ function App() {
       document.removeEventListener('keydown', handleKey);
       document.body.style.overflow = previousOverflow;
     };
-  }, [lightboxArtwork, closeLightbox, showPrev, showNext, isFullSize]);
+  }, [lightboxArtwork, closeLightbox, showPrev, showNext]);
 
   const renderWorkGrid = (columns: Artwork[][]) => (
     <div className="work-grid">
@@ -535,14 +526,14 @@ function App() {
 
       {lightboxArtwork && lightboxView && (
         <div
-          className={`lightbox${isFullSize ? ' is-fullsize' : ''}`}
+          className="lightbox"
           role="dialog"
           aria-modal="true"
           aria-labelledby="lightbox-title"
           onClick={closeLightbox}
         >
           <div
-            className={`lightbox-dialog${isFullSize ? ' is-fullsize' : ''}`}
+            className="lightbox-dialog"
             onClick={(event) => event.stopPropagation()}
           >
             <div className="lightbox-toolbar">
@@ -559,20 +550,6 @@ function App() {
               <button
                 type="button"
                 className="lightbox-tool"
-                onClick={() => setIsFullSize((value) => !value)}
-                aria-label={isFullSize ? 'Exit full size view' : 'View full size'}
-                aria-pressed={isFullSize}
-                title={isFullSize ? 'Exit full size' : 'View full size'}
-              >
-                {isFullSize ? (
-                  <Minimize2 aria-hidden="true" size={18} strokeWidth={1.8} />
-                ) : (
-                  <Maximize2 aria-hidden="true" size={18} strokeWidth={1.8} />
-                )}
-              </button>
-              <button
-                type="button"
-                className="lightbox-tool"
                 onClick={closeLightbox}
                 aria-label="Close artwork detail"
                 title="Close"
@@ -581,17 +558,8 @@ function App() {
               </button>
             </div>
             <div className="lightbox-figure">
-              {/* Full size shows the original at its actual pixel size (one image pixel per screen pixel); scroll to pan. */}
               <img
-                src={assetUrl(isFullSize ? lightboxView.full : lightboxView.large)}
-                style={
-                  isFullSize
-                    ? {
-                        width: lightboxView.width / window.devicePixelRatio,
-                        height: lightboxView.height / window.devicePixelRatio,
-                      }
-                    : undefined
-                }
+                src={assetUrl(lightboxView.large)}
                 alt={lightboxView.caption ? `${lightboxArtwork.alt} (${lightboxView.caption})` : lightboxArtwork.alt}
               />
               {lightboxArtwork.images.length > 1 && (
