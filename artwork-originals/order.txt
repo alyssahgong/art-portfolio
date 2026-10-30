@@ -1,0 +1,24 @@
+# Page order of the artworks, top to bottom: one piece per line, by its title.
+# Move a line to move the piece. Lines starting with # are ignored.
+
+Roots of My Ancestors
+Fading in and Out
+Garden of Identity
+Rooted in Bamboo
+Shrouded by Waves
+Peeking Through
+Versions of Me
+Salad Bowl of America
+Familial Still Life
+Sketchbook Page
+Society's Box
+Home?
+Is It All a Fabrication?
+Lunch
+Soft
+Comfort
+Shining Through the Blue
+From the Bush
+Anxieties
+Caught
+Dinnertime
